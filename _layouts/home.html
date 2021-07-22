@@ -1,8 +1,9 @@
 ---
 layout: page
 ---
-{% include masthead.html %}
-
+<a href="/about/" style="text-decoration: none; color: #eaeaea">
+  {% include masthead.html %}
+</a>
 {{ content }}
 
 <div class="entries-{{ page.entries_layout | default: 'list' }}">
