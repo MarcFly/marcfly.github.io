@@ -1,0 +1,16 @@
+# Sample site navigation bar links
+
+
+- title: <i class="fas fa-home fa-2x"></i>
+  url: /
+- title: <i class="fas fa-file-alt fa-2x"></i>
+  url: /posts/
+- title: <i class="fas fa-archive fa-2x"></i>
+  url: /categories/
+- title: <i class="fas fa-tags fa-2x"></i>
+  url: /tags/
+- title: <i class="fas fa-user fa-2x"></i>
+  url: /about/
+- title: <i class="fas fa-search fa-2x"></i>
+  url: /search/
+  

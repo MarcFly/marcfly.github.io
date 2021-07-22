@@ -1,0 +1,62 @@
+---
+layout: default
+---
+
+<div id="main" class="main-content" aria-label="Content">
+  <div class="page-custom-post">
+
+    <!--{% include page-image.html %}-->
+    {% assign title = page.title | markdownify | strip_html %}
+    {% if page.link %}
+      <h1 id="page-title" class="page-title p-name"><a href="{{ page.link }}">{{ title }} <span class="link-arrow">&rarr;</span></a></h1>
+    {% else %}
+      <h1 id="page-title" class="page-title p-name">{{ title }}</h1>
+    {% endif %}
+    <hr>
+
+    {% assign categories = page.categories | sort %}
+    <ul class="page-taxonomies">
+      <li><b>Categories:</b></li>
+      {%- for category in categories -%}
+        <li class="page-taxonomy">
+          {%- if site.category_archive_path -%}
+            <a class="p-category" href="{{ category | slugify | prepend: site.category_archive_path | relative_url }}" title="{{ site.data.text[site.locale].pages_categorized | default: 'Pages filed under' }} {{ category }}">{{ category }}</a>
+          {%- else -%}
+            {{ category }}
+          {%- endif -%}
+        </li>
+      {%- endfor- %}
+    </ul>
+
+    {% assign tags = page.tags | sort %}
+    <ul class="page-taxonomies">
+      <li><b>Tags:</b></li>
+      {%- for tag in tags -%}
+        <li class="page-taxonomy">
+          {%- if site.tag_archive_path -%}
+            <a href="{{ tag | slugify | prepend: site.tag_archive_path | relative_url }}" title="{{ site.data.text[site.locale].pages_tagged | default: 'Pages tagged' }} {{ tag }}" rel="tag">{{ tag }}</a>
+          {%- else -%}
+            {{ tag }}
+          {%- endif -%}
+        </li>
+      {%- endfor- %}
+    </ul>
+
+    <hr>
+    {{content}}
+
+    <hr>
+
+    <div align="center">
+    {% if page.share %}
+      {% include social-share.html %}
+    {% endif %}
+    </div>
+
+    {% if site.disqus.shortname %}
+      {% include disqus-comments.html %}
+    {% endif %}
+
+    {% include page-pagination.html %}
+  </div !-- Custom Post-->
+</div !-- Main -->
