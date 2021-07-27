@@ -16,22 +16,22 @@
   
     
     <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Getting this blog setup | Marc Torres’ Devlog</title>
+<title>Setup | Marc Torres’ Devlog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Getting this blog setup" />
+<meta property="og:title" content="Setup" />
 <meta name="author" content="Marc Torres Jimenez" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="How to make a Jekyll Blog easily and hassle-free." />
-<meta property="og:description" content="How to make a Jekyll Blog easily and hassle-free." />
+<meta name="description" content="`— title: “Getting this blog setup” description: How to make a Jekyll Blog easily and hassle-free. categories: Web tags: markdown html jekyll last_modified_at: 2021-07-22T11:00:00-01:00 —" />
+<meta property="og:description" content="`— title: “Getting this blog setup” description: How to make a Jekyll Blog easily and hassle-free. categories: Web tags: markdown html jekyll last_modified_at: 2021-07-22T11:00:00-01:00 —" />
 <meta property="og:site_name" content="Marc Torres’ Devlog" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-07-21T00:00:00+02:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Getting this blog setup" />
+<meta property="twitter:title" content="Setup" />
 <meta name="twitter:site" content="@MarcTorres_Dev" />
 <meta name="twitter:creator" content="@MarcTorres_Dev" />
 <script type="application/ld+json">
-{"headline":"Getting this blog setup","dateModified":"2021-07-22T14:00:00+02:00","datePublished":"2021-07-21T00:00:00+02:00","author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/web/2021/07/21/Setup.html"},"description":"How to make a Jekyll Blog easily and hassle-free.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/web/2021/07/21/Setup.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Marc Torres Jimenez"},"headline":"Setup","dateModified":"2021-07-21T00:00:00+02:00","@type":"BlogPosting","datePublished":"2021-07-21T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/2021/07/21/Setup.html"},"description":"`— title: “Getting this blog setup” description: How to make a Jekyll Blog easily and hassle-free. categories: Web tags: markdown html jekyll last_modified_at: 2021-07-22T11:00:00-01:00 —","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/2021/07/21/Setup.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -58,7 +58,7 @@
 </head>
 
 
-  <body class="layout--post  getting-this-blog-setup">
+  <body class="layout--post  setup">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -85,23 +85,37 @@
 -->
     
     
-      <h1 id="page-title" class="page-title p-name">Getting this blog setup
+      <h1 id="page-title" class="page-title p-name">Setup
 </h1>
     
     <hr>
 
     
     <ul class="page-taxonomies">
-      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#web" title="Pages filed under Web">Web</a></li>
+      <li><b>Categories:</b></li>
     </ul>
 
     
     <ul class="page-taxonomies">
-      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#html" title="Pages tagged html" rel="tag">html</a></li><li class="page-taxonomy"><a href="/tags/#jekyll" title="Pages tagged jekyll" rel="tag">jekyll</a></li><li class="page-taxonomy"><a href="/tags/#markdown" title="Pages tagged markdown" rel="tag">markdown</a></li>
+      <li><b>Tags:</b></li>
     </ul>
 
     <hr>
-    <h1 id="before-anything-else">Before anything else</h1>
+    <p>`—
+title: “Getting this blog setup”
+description: How to make a Jekyll Blog easily and hassle-free.
+categories:</p>
+<ul>
+  <li>Web
+tags:</li>
+  <li>markdown</li>
+  <li>html</li>
+  <li>jekyll
+last_modified_at: 2021-07-22T11:00:00-01:00
+—</li>
+</ul>
+
+<p>This post will be an overview on getting a simple <code class="language-plaintext highlighter-rouge">Jekyll</code> based blog working.</p>
 
 <p>For this you will need any text editor and just knowing that terminal exist, where you write things and things go boom or vroom.</p>
 
@@ -252,11 +266,17 @@ bundle add &lt;gem&gt;
 
 <h1 id="hosting">Hosting</h1>
 
-<p>I really have no clue, I have never hosted any blog or personal webpage anywhere. What I am using at the time of posting this first entry is <a href="https://pages.github.com/"><code class="language-plaintext highlighter-rouge">Github Pages</code></a>, in which you just create a repository for the main page, tell it on settign where to start searching for the entry <code class="language-plaintext highlighter-rouge">index.html</code> page and it will be displayed under either <code class="language-plaintext highlighter-rouge">user.github.io/ProjectName</code> or a custom domain name. it is currently free and does just what I need.</p>
+<p>I really have no clue, I have never hosted any blog or personal webpage anywhere. What I am using at the time of posting this first entry is <a href="https://pages.github.com/"><code class="language-plaintext highlighter-rouge">Github Pages</code></a>.</p>
+
+<p>In the settings for the repository, select where to start searching for the entry <code class="language-plaintext highlighter-rouge">index.html</code> page and it will be displayed under either <code class="language-plaintext highlighter-rouge">user.github.io/ProjectName</code>. The domain name can be customized but I don’t feel it is necessary to do for most projects.</p>
+
+<p>For a dedicated page, you create a repository with the name <code class="language-plaintext highlighter-rouge">&lt;username&gt;.github.io</code> that will become your landing page.</p>
+
+<p>The service is currently free and does just exactly what I need, probably even more but I currently don’t need to delve deeper into it.</p>
 
 <h1 id="conclusions">Conclusions</h1>
 
-<p>If you don’t have a personal page, create one. It is not a thing that will increase much our visibility, but it will serve as a more polished and curated view to your own work!</p>
+<p>If you don’t have a personal page, create one. It is not a thing that will increase much our visibility, but it will serve a more polished and curated view to your own work towards other people.</p>
 
 
     <hr>
@@ -264,9 +284,9 @@ bundle add &lt;gem&gt;
     <div align="center">
     
       <div class="page-share">
-  <a href="https://twitter.com/intent/tweet?text=Getting+this+blog+setup%20%2Fweb%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fweb%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
-  <a href="https://reddit.com/submit?title=Getting+this+blog+setup&url=%2Fweb%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Setup%20%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Setup&url=%2F2021%2F07%2F21%2FSetup.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
 </div>
 
     
