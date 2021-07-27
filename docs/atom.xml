@@ -1,3 +1,156 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-07-22T21:48:14+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;h1 id=&quot;hello-test-post&quot;&gt;Hello test post&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-07-27T12:48:27+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;h1 id=&quot;before-anything-else&quot;&gt;Before anything else&lt;/h1&gt;
 
-&lt;p&gt;Maybe the post had no words and that was the issue&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Web" /><category term="markdown" /><category term="html" /><category term="jekyll" /><summary type="html">Hello test post</summary></entry></feed>
+&lt;p&gt;For this you will need any text editor and just knowing that terminal exist, where you write things and things go boom or vroom.&lt;/p&gt;
+
+&lt;p&gt;My choice is &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt; which has built-in terminal support, is cross-platform and quite lightweight.&lt;/p&gt;
+
+&lt;h1 id=&quot;jekyll&quot;&gt;Jekyll&lt;/h1&gt;
+
+&lt;p&gt;The framework used for setting up this blog is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt;, which is a static page generator. In other works you feed it a certain type of file (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;html templates&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;markdown&lt;/code&gt;,…) and a set of rules (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;YAML&lt;/code&gt;) and the output is a easy to maintain static blog.&lt;/p&gt;
+
+&lt;p&gt;The benefit of doing it this way is that the pages are as fast as long as you don’t bloat them with too much &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CSS&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Javascript&lt;/code&gt; bullcrap. There are tons of templates available, of which I am using a slightly modified &lt;a href=&quot;https://github.com/mmistakes/so-simple-theme&quot;&gt;So Simple&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing-jekyll&quot;&gt;Installing Jekyll&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/docs/installation/&quot;&gt;The guide for installing Jekyll&lt;/a&gt; is really straight to the point, so going there is recommended (specially for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Linux&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WSL&lt;/code&gt;). But in short:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Install the Requirements
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.ruby-lang.org/en/downloads/&quot;&gt;Ruby 2.5.0 &amp;lt; &lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://rubygems.org/pages/download&quot;&gt;RubyGems&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://win-builds.org/doku.php&quot;&gt;GCC + Make&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Done!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Personally I installed directly GCC and Make through &lt;a href=&quot;http://win-builds.org/doku.php&quot;&gt;Win-Builds&lt;/a&gt; which makes the process &lt;em&gt;SO Simple&lt;/em&gt; ;), but you have to take care of unchecking what you don’t want to install.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/01-Getting-this-blog-setup/WinBuild.png&quot; alt=&quot;Setup Screen of Win-Builds&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;starting-the-blog&quot;&gt;Starting the blog&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open a terminal instance (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Command Prompt&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bash&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Powershell&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Konsole&lt;/code&gt;,…)&lt;/li&gt;
+  &lt;li&gt;Navigate to where the blog folder will be created&lt;/li&gt;
+  &lt;li&gt;Create the blog&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;C:/&amp;lt;path&amp;gt;/&amp;lt;to&amp;gt;/&amp;lt;folder&amp;gt;
+&lt;span class=&quot;c&quot;&gt;# For base template&lt;/span&gt;
+jekyll new &amp;lt;blogname&amp;gt; &lt;span class=&quot;c&quot;&gt;#--blank #Option to not install any default theme&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &amp;lt;blogname&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The newly created blog should follow a similar structure:&lt;/p&gt;
+
+&lt;p&gt;&lt;img style=&quot;float: right&quot; src=&quot;/assets/posts_images/01-Getting-this-blog-setup/FolderStructure.png&quot; width=&quot;30%&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_data&lt;/code&gt; : Were secondary configuration files are stored&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_drafts&lt;/code&gt; : WIP posts, in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML&lt;/code&gt; primarily, but not made public&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_includes&lt;/code&gt; : Specific &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML Templates&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_layouts&lt;/code&gt; : Page type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML Templates&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; : Finished posts that are made public&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_sass&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_css&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_scss&lt;/code&gt; : Where the stylesheets are saved&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;assets&lt;/code&gt; : An optional folder to organize assets under&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; : Main Config file&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gemfile&lt;/code&gt; : File detailing which plugins to use (Gems - RubyGems)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then you can preview it by executing and going to &lt;strong&gt;&lt;a href=&quot;localhost:4000&quot;&gt;localhost:4000&lt;/a&gt;&lt;/strong&gt; on you browser&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll serve
+&lt;span class=&quot;c&quot;&gt;# If you don&apos;t have a theme, ignore &amp;lt;bundle exec&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;With that you are already done, you can start righting posts and whatever you want!&lt;/p&gt;
+
+&lt;h1 id=&quot;your-first-post&quot;&gt;Your First Post!&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Create a new &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now that you are setup, a base file would look like the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;My&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Awesome&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Post&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Damn&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;easy&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;page / default / post /...&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;theme-options&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+
+&lt;span class=&quot;gh&quot;&gt;# Content Starts Here!&lt;/span&gt;
+
+lorem ipsum whatever i don&apos;t remeber more than the start...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Each file will have a header in which the parsin information will be setup. Depending on the theme there will be different layout options and exlusive options to be filled. For example in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SO Simple&lt;/code&gt; theme, there are categories and tags that can be wirtten to then have an easier way for searching and filtering posts.&lt;/p&gt;
+
+&lt;p&gt;Then the content of the posts is written using either &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML&lt;/code&gt; or &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt;&lt;/a&gt; syntax, which is extremely simple and quick to get used to. The theme will take care of your content being displayed as intended, you just have to focus on making the contest as rich and straight to the point and it should.&lt;/p&gt;
+
+&lt;p&gt;Congrats, you have your first post already up and running.&lt;/p&gt;
+
+&lt;h1 id=&quot;themes-and-customization&quot;&gt;Themes and Customization&lt;/h1&gt;
+
+&lt;p&gt;Making the blog your own is just a process of finding the template you want and changing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CSS&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML Templates&lt;/code&gt;.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Browse for themes:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/topics/jekyll-theme&quot;&gt;Github&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://jamstackthemes.dev/ssg/jekyll/&quot;&gt;JamStack Themes&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;http://jekyllthemes.org/&quot;&gt;jekyllthemes.org&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://jekyllthemes.io/&quot;&gt;jekyllthemes.io&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://jekyll-themes.com/&quot;&gt;jekyll-themes.com&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Download it and exctract on the folder to build upon it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;gemfile&quot;&gt;Gemfile&lt;/h2&gt;
+
+&lt;p&gt;The gemfile details the dependencies for other plugis or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gems&lt;/code&gt;.You will find that some rely on dependencies or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Gems&lt;/code&gt; unspecified, in most cases you will have to add them to the project and it will just work:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &amp;lt;gem&amp;gt;
+bundle add &amp;lt;gem&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then to make sure that the ones used are up to date:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle update &lt;span class=&quot;c&quot;&gt;#&amp;lt;THEME&amp;gt; &lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#If you have dropped the theme in your folder it is not needed to specify the theme&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;layouts&quot;&gt;Layouts&lt;/h2&gt;
+
+&lt;p&gt;On the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/layouts&lt;/code&gt; directory there will be the base pages for the layout. The gist of it is that the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HTML&lt;/code&gt; files will be used as templates for the content provided in the pages created previously.&lt;/p&gt;
+
+&lt;p&gt;If you are not familiar with the notation, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; parses &lt;a href=&quot;https://shopify.github.io/liquid/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Liquid&lt;/code&gt;&lt;/a&gt; based syntax to generate the final website structure. Each layout and include will probably be riddled with  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{% something something %}&lt;/code&gt; , that is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Liquid&lt;/code&gt; code.&lt;/p&gt;
+
+&lt;p&gt;Unless you want to create your own theme or modify heavily some parts of another one, you don’t really have to get into the nitty gritty of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Liquid&lt;/code&gt;. The syntax is quite clear, with its quirks and a very annoying way to specify code to be parsed.&lt;/p&gt;
+
+&lt;h2 id=&quot;includes&quot;&gt;Includes&lt;/h2&gt;
+
+&lt;p&gt;In most layouts, you will find &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Liquid&lt;/code&gt; lines that do the following  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;{% include &amp;lt;file.html&amp;gt; %}&lt;/code&gt; . This will insert the file into the one being parsed. These include files are for specific uses that require more owrk to get going, are less user friendly and bring functionailty to multiple layouts usually.&lt;/p&gt;
+
+&lt;p&gt;In most circumstances, you might poke around there but there is not much to gain besides knowledege if you are selecting a premade theme.&lt;/p&gt;
+
+&lt;h2 id=&quot;stylesheets&quot;&gt;Stylesheets&lt;/h2&gt;
+
+&lt;p&gt;Coming from someone who know jack-shit about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CSS&lt;/code&gt;, poke around and have fun searching around the web to get specific changes. Most themes will provide a main file with some variables that can be overriden with your preferred color schemes and fonts. To make further changes you are on your own. Just one thing:&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;%variable : value1 value2 value3 ...&lt;/code&gt; : Is how variables are created in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCSS&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SASS&lt;/code&gt;, can include other variables as values.&lt;/p&gt;
+
+&lt;h1 id=&quot;hosting&quot;&gt;Hosting&lt;/h1&gt;
+
+&lt;p&gt;I really have no clue, I have never hosted any blog or personal webpage anywhere. What I am using at the time of posting this first entry is &lt;a href=&quot;https://pages.github.com/&quot;&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Github Pages&lt;/code&gt;&lt;/a&gt;, in which you just create a repository for the main page, tell it on settign where to start searching for the entry &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;index.html&lt;/code&gt; page and it will be displayed under either &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;user.github.io/ProjectName&lt;/code&gt; or a custom domain name. it is currently free and does just what I need.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusions&quot;&gt;Conclusions&lt;/h1&gt;
+
+&lt;p&gt;If you don’t have a personal page, create one. It is not a thing that will increase much our visibility, but it will serve as a more polished and curated view to your own work!&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Web" /><category term="markdown" /><category term="html" /><category term="jekyll" /><summary type="html">Before anything else</summary></entry></feed>

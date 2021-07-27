@@ -57,26 +57,32 @@ h6 {
 
 h1 {
   @include fluid-type($min-vw, $max-vw, $h1-min, $h1-max);
+  margin-top: 3rem;
 }
 
 h2 {
   @include fluid-type($min-vw, $max-vw, $h2-min, $h2-max);
+  margin-top: 1.5rem;
 }
 
 h3 {
   @include fluid-type($min-vw, $max-vw, $h3-min, $h3-max);
+  margin-top: 1rem;
 }
 
 h4 {
   @include fluid-type($min-vw, $max-vw, $h4-min, $h4-max);
+  margin-top: 1rem;
 }
 
 h5 {
   @include fluid-type($min-vw, $max-vw, $h5-min, $h5-max);
+  margin-top: 1rem;
 }
 
 h6 {
   @include fluid-type($min-vw, $max-vw, $h6-min, $h6-max);
+  margin-top: 1rem;
 }
 
 dt {
