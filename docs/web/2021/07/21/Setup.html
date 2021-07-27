@@ -31,7 +31,7 @@
 <meta name="twitter:site" content="@MarcTorres_Dev" />
 <meta name="twitter:creator" content="@MarcTorres_Dev" />
 <script type="application/ld+json">
-{"author":{"@type":"Person","name":"Marc Torres Jimenez"},"headline":"Getting this blog setup","@type":"BlogPosting","dateModified":"2021-07-22T14:00:00+02:00","datePublished":"2021-07-21T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/web/2021/07/21/Setup.html"},"description":"How to make a Jekyll Blog easily and hassle-free.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/web/2021/07/21/Setup.html","@context":"https://schema.org"}</script>
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/web/2021/07/21/Setup.html"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","description":"How to make a Jekyll Blog easily and hassle-free.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/web/2021/07/21/Setup.html","headline":"Getting this blog setup","dateModified":"2021-07-22T14:00:00+02:00","datePublished":"2021-07-21T00:00:00+02:00","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -103,15 +103,15 @@
     <hr>
     <p>This post will be an overview on getting a simple <code class="language-plaintext highlighter-rouge">Jekyll</code> based blog working.</p>
 
-<p>For this you will need any text editor and just knowing that terminal exist, where you write things and things go boom or vroom.</p>
+<p>For this you will need any text editor and just knowing that the terminal exist, where you write words and things go boom or vroom.</p>
 
 <p>My choice is <a href="https://code.visualstudio.com/">Visual Studio Code</a> which has built-in terminal support, is cross-platform and quite lightweight.</p>
 
 <h1 id="jekyll">Jekyll</h1>
 
-<p>The framework used for setting up this blog is <code class="language-plaintext highlighter-rouge">Jekyll</code>, which is a static page generator. In other works you feed it a certain type of file (<code class="language-plaintext highlighter-rouge">html templates</code>, <code class="language-plaintext highlighter-rouge">markdown</code>,…) and a set of rules (<code class="language-plaintext highlighter-rouge">YAML</code>) and the output is a easy to maintain static blog.</p>
+<p>The framework used for setting up this blog is <code class="language-plaintext highlighter-rouge">Jekyll</code>, which is a static page generator. In other works you feed it a certain type of file (<code class="language-plaintext highlighter-rouge">html templates</code>, <code class="language-plaintext highlighter-rouge">markdown</code>,…), a set of rules (<code class="language-plaintext highlighter-rouge">YAML files</code>) and the output is an easy to maintain static blog.</p>
 
-<p>The benefit of doing it this way is that the pages are as fast as long as you don’t bloat them with too much <code class="language-plaintext highlighter-rouge">CSS</code>/<code class="language-plaintext highlighter-rouge">Javascript</code> bullcrap. There are tons of templates available, of which I am using a slightly modified <a href="https://github.com/mmistakes/so-simple-theme">So Simple</a>.</p>
+<p>The benefit of doing it this way is that the pages are as fast as long as you don’t bloat them with too much <code class="language-plaintext highlighter-rouge">CSS</code>/<code class="language-plaintext highlighter-rouge">Javascript</code> bullcrap. There are tons of templates available, of which I am using a slightly modified version of <a href="https://github.com/mmistakes/so-simple-theme">So Simple</a>.</p>
 
 <h2 id="installing-jekyll">Installing Jekyll</h2>
 
@@ -130,8 +130,6 @@
 <p>Personally I installed directly GCC and Make through <a href="http://win-builds.org/doku.php">Win-Builds</a> which makes the process <em>SO Simple</em> ;), but you have to take care of unchecking what you don’t want to install.</p>
 
 <p><img src="/assets/posts_images/01-Getting-this-blog-setup/WinBuild.png" alt="Setup Screen of Win-Builds" /></p>
-
-<p><br /></p>
 
 <h1 id="starting-the-blog">Starting the blog</h1>
 
@@ -171,7 +169,7 @@ jekyll new &lt;blogname&gt; <span class="c">#--blank #Option to not install any 
 <span class="c"># If you don't have a theme, ignore &lt;bundle exec&gt;</span>
 </code></pre></div></div>
 
-<p>With that you are already done, you can start righting posts and whatever you want!</p>
+<p>With that you are already done, you can start writing posts and whatever you want!</p>
 
 <h1 id="your-first-post">Your First Post!</h1>
 
@@ -180,7 +178,7 @@ jekyll new &lt;blogname&gt; <span class="c">#--blank #Option to not install any 
   <li>Create a new <code class="language-plaintext highlighter-rouge">Markdown</code> file</li>
 </ul>
 
-<p>Now that you are setup, a base file would look like the following:</p>
+<p>Now that you are setup, a base file should look like the following:</p>
 
 <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
 <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">My</span><span class="nv"> </span><span class="s">Awesome</span><span class="nv"> </span><span class="s">Post"</span>
@@ -194,11 +192,11 @@ jekyll new &lt;blogname&gt; <span class="c">#--blank #Option to not install any 
 lorem ipsum whatever i don't remeber more than the start...
 </code></pre></div></div>
 
-<p>Each file will have a header in which the parsin information will be setup. Depending on the theme there will be different layout options and exlusive options to be filled. For example in the <code class="language-plaintext highlighter-rouge">SO Simple</code> theme, there are categories and tags that can be wirtten to then have an easier way for searching and filtering posts.</p>
+<p>Each file will have a header in which the parsing information will be setup. Depending on the theme there will be different layout options and exclusive options to be filled. For example in the <code class="language-plaintext highlighter-rouge">SO Simple</code> theme, there are categories and tags that can be written to then have an easier way to seach and filter posts.</p>
 
-<p>Then the content of the posts is written using either <code class="language-plaintext highlighter-rouge">HTML</code> or <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"><code class="language-plaintext highlighter-rouge">Markdown</code></a> syntax, which is extremely simple and quick to get used to. The theme will take care of your content being displayed as intended, you just have to focus on making the contest as rich and straight to the point and it should.</p>
+<p>Then the content of the posts is written using either <code class="language-plaintext highlighter-rouge">HTML</code> or <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"><code class="language-plaintext highlighter-rouge">Markdown</code></a> syntax, which is extremely simple and quick to get used to. The theme will take care of your content being displayed as intended, you just have to focus on making the contest as rich and straight to the point as it should.</p>
 
-<p>Congrats, you have your first post already up and running.</p>
+<p>Congrats, you have your first post already up and running!</p>
 
 <h1 id="themes-and-customization">Themes and Customization</h1>
 
@@ -213,12 +211,14 @@ lorem ipsum whatever i don't remeber more than the start...
       <li><a href="https://jekyll-themes.com/">jekyll-themes.com</a></li>
     </ul>
   </li>
-  <li>Download it and exctract on the folder to build upon it.</li>
+  <li>Download it and follow the theme instructions. Most themes are basically drag and drop to start, some are a bit more finnicky.</li>
 </ul>
+
+<p><code class="language-plaintext highlighter-rouge">! THE CONFIG.YML FILE ORDER OF COMMANDS IS VERY IMPORTANT</code></p>
 
 <h2 id="gemfile">Gemfile</h2>
 
-<p>The gemfile details the dependencies for other plugis or <code class="language-plaintext highlighter-rouge">Gems</code>.You will find that some rely on dependencies or <code class="language-plaintext highlighter-rouge">Gems</code> unspecified, in most cases you will have to add them to the project and it will just work:</p>
+<p>The gemfile details the dependencies for other plugins or <code class="language-plaintext highlighter-rouge">Gems</code>. You will find that some rely on dependencies or <code class="language-plaintext highlighter-rouge">Gems</code> that are unspecified, in most cases you will have to add them to the project and it will just work:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">install</span> &lt;gem&gt;
 bundle add &lt;gem&gt;
@@ -232,21 +232,21 @@ bundle add &lt;gem&gt;
 
 <h2 id="layouts">Layouts</h2>
 
-<p>On the <code class="language-plaintext highlighter-rouge">/layouts</code> directory there will be the base pages for the layout. The gist of it is that the <code class="language-plaintext highlighter-rouge">HTML</code> files will be used as templates for the content provided in the pages created previously.</p>
+<p>On the <code class="language-plaintext highlighter-rouge">/layouts</code> directory there will be the base pages for the layout. The gist of it is that the <code class="language-plaintext highlighter-rouge">HTML</code> files will be used as templates for the content provided.</p>
 
-<p>If you are not familiar with the notation, <code class="language-plaintext highlighter-rouge">Jekyll</code> parses <a href="https://shopify.github.io/liquid/"><code class="language-plaintext highlighter-rouge">Liquid</code></a> based syntax to generate the final website structure. Each layout and include will probably be riddled with  <code class="language-plaintext highlighter-rouge">{% something something %}</code> , that is <code class="language-plaintext highlighter-rouge">Liquid</code> code.</p>
+<p>If you are not familiar with the notation, <code class="language-plaintext highlighter-rouge">Jekyll</code> parses <a href="https://shopify.github.io/liquid/"><code class="language-plaintext highlighter-rouge">Liquid</code></a> based syntax to generate the final website structure. Each layout and include file will probably be riddled with  <code class="language-plaintext highlighter-rouge">{% something something %}</code> , that is <code class="language-plaintext highlighter-rouge">Liquid</code> code.</p>
 
 <p>Unless you want to create your own theme or modify heavily some parts of another one, you don’t really have to get into the nitty gritty of <code class="language-plaintext highlighter-rouge">Liquid</code>. The syntax is quite clear, with its quirks and a very annoying way to specify code to be parsed.</p>
 
 <h2 id="includes">Includes</h2>
 
-<p>In most layouts, you will find <code class="language-plaintext highlighter-rouge">Liquid</code> lines that do the following  <code class="language-plaintext highlighter-rouge">{% include &lt;file.html&gt; %}</code> . This will insert the file into the one being parsed. These include files are for specific uses that require more owrk to get going, are less user friendly and bring functionailty to multiple layouts usually.</p>
+<p>In most layouts, you will find <code class="language-plaintext highlighter-rouge">Liquid</code> lines that do the following  <code class="language-plaintext highlighter-rouge">{% include &lt;file.html&gt; %}</code> . This will insert the file into the one being parsed. These include files are for specific uses that require more work to get going, are less user friendly or bring functionality to multiple layouts usually.</p>
 
-<p>In most circumstances, you might poke around there but there is not much to gain besides knowledege if you are selecting a premade theme.</p>
+<p>In most circumstances, you might want to poke around there but there is not much to gain besides knowledege, if you are using a premade theme.</p>
 
 <h2 id="stylesheets">Stylesheets</h2>
 
-<p>Coming from someone who know jack-shit about <code class="language-plaintext highlighter-rouge">CSS</code>, poke around and have fun searching around the web to get specific changes. Most themes will provide a main file with some variables that can be overriden with your preferred color schemes and fonts. To make further changes you are on your own. Just one thing:</p>
+<p>Coming from someone who knows jack-shit about <code class="language-plaintext highlighter-rouge">CSS</code>, poke around and have fun searching around the web to get specific changes. Most themes will provide a main file with some variables that can be overriden with your preferred color schemes and fonts. To make further changes you are on your own. Just one thing:</p>
 
 <p><code class="language-plaintext highlighter-rouge">%variable : value1 value2 value3 ...</code> : Is how variables are created in <code class="language-plaintext highlighter-rouge">SCSS</code>/<code class="language-plaintext highlighter-rouge">SASS</code>, can include other variables as values.</p>
 
@@ -254,7 +254,7 @@ bundle add &lt;gem&gt;
 
 <p>I really have no clue, I have never hosted any blog or personal webpage anywhere. What I am using at the time of posting this first entry is <a href="https://pages.github.com/"><code class="language-plaintext highlighter-rouge">Github Pages</code></a>.</p>
 
-<p>In the settings for the repository, select where to start searching for the entry <code class="language-plaintext highlighter-rouge">index.html</code> page and it will be displayed under either <code class="language-plaintext highlighter-rouge">user.github.io/ProjectName</code>. The domain name can be customized but I don’t feel it is necessary to do for most projects.</p>
+<p>In the <code class="language-plaintext highlighter-rouge">Repository-&gt;Setting-&gt;Pages</code> select where, base or docs, to start searching for the entry <code class="language-plaintext highlighter-rouge">index.html</code> page and it will be displayed under <code class="language-plaintext highlighter-rouge">user.github.io/ProjectName</code>. The domain name can be customized but I don’t feel it is necessary to do for most projects.</p>
 
 <p>For a dedicated page, you create a repository with the name <code class="language-plaintext highlighter-rouge">&lt;username&gt;.github.io</code> that will become your landing page.</p>
 
@@ -262,7 +262,7 @@ bundle add &lt;gem&gt;
 
 <h1 id="conclusions">Conclusions</h1>
 
-<p>If you don’t have a personal page, create one. It is not a thing that will increase much our visibility, but it will serve a more polished and curated view to your own work towards other people.</p>
+<p>If you don’t have a personal page, create one. It is not a thing that will increase much your visibility, but it will serve a more polished and curated view to your own work towards other people.</p>
 
 
     <hr>
