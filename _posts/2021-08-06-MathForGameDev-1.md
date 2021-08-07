@@ -7,20 +7,30 @@ categories:
 tags:
  - math
  - game development
- - 
+ - trigonometry
+ - introduction
 last_modified_at: 2021-08-06T11:00:00-01:00
 ---
 
-[Freya Holmer](https://twitter.com/FreyaHolmer) published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes accessible in a form I am comfortable, as well as getting class from an incredible content creator and programmer. Check her out please!
+[Freya Holmer](https://twitter.com/FreyaHolmer) published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.
 
-# Vectors Basics
+# Vectors Basics - 1D
+
+![](/assets/posts_images/02-MathGameDev01/Vector1D.png)
+
+Vectors by themselves just represent a point relative to an other origin point. In the base example, `v2` has the origin in `1` but ends in `-2`, the vector itself is `v2(-3)`. `v1` on the other hand starts at our arbitrary origin thus the component `x` being the representative of the vector itself `v1(2)`.
+
+![](/assets/posts_images/02-MathGameDev01/length_sign_1D.png)
 
  - `length` : **absolute** magnitude or scalar size of a vector. Calculating the magnitude of a vector varies by dimentions, explained later.
  - `absolute` : refering to the positive part of numbers, also known as unsigned.
  - `direction` : unit representation of a vector
- - `unit / normalized vector` : vector which its length is 1. Basically `v / length(v) = (vx / length(v), vy / length(v), ...)`
+ - `unit / normalized vector` : vector which its length is 1. Basically `v / length(v) = (vx / length(v), vy / length(v), ...)`h(v), ...)`
  - `sign(v)` : general representation of the direction of a vector. It should return a vector according to the vector dimention input, normalized (`length = 1`).
-    - A `0 direction` vector, can be interpreted in a variety of waysly. Generally we want 1 in programming
+    - A `0 direction` vector, can be interpreted in a variety of way. Generally we want 1 to be returned in programming but your mileage may vary.
+
+![](/assets/posts_images/02-MathGameDev01/distance_1D.png)
+
  - `distance` : length of the vector that joins two positions : `abs(length(vB - vA))`
  - `signed distance` : usually we use the positive term of a distance, sometimes we want also a negative want, thuse we don't get the absolute : `length(vB - vA)
 
@@ -28,9 +38,11 @@ When using more dimentions you will want to use different colors per dimention. 
 
 Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.
 
-Vectors really define a point in space from `0o` (Origin point).
+Vectors really define a point in space from a defined `0o` (Origin point).
 
 # 2D Vectors - `vector2D(x, y)`
+
+![](/assets/posts_images/02-MathGameDev01/Vector2D.png)
 
 **Addition:** `v1 + v2 = (v1x + v2x, v1y + v2y)` - **Commutative** -> `v1 + v2 = v2 + v1`
 
@@ -38,7 +50,9 @@ Vectors really define a point in space from `0o` (Origin point).
  - Why not commutative? -> We are changing the sign of v2 (negate components), then perform an addition of the vectors.
  - Ex: `(2,1) - (1,1) = (1, 0)` but `(1,1) - (2,1) = (-1,0)`
 
-**Multiplication:** There are different methods of multiplying and dividing vectors. In most cases, the most straightforward way of multipying the components against the components of another vector is not widely used. Multiplication normally refers to a scalar multiplying a vector `v1 * scalar = (v1x * scalar, v1y * scalar)`. Other caseswill be shown later.
+![Scalar Multiplication](/assets/posts_images/02-MathGameDev01/Vector2D_Scalar.png) 
+
+**Scalar Multiplication:** There are more types, but in the most basic is per component multiplication to scale it. `v1 * scalar = (v1.x * scalar, v1.y * scalar)` or `v1 * v2 = (v1.x * v2.x, v1.y * v2.y)`.
 
 Vector interpretation depends on its purpose, by themselves vectors don't define anything but a point. Be clear about what a vector is supposed to be interpreted as (direction, translation, point, worldspace, localspace,...).
 
@@ -46,9 +60,9 @@ Vector interpretation depends on its purpose, by themselves vectors don't define
 
 ## Why are Normalized vectors useful?
 
-When we wan to do something along a direction, we don't want to add further changes than intended. A unit / normalized vector provides just a direction and then we can modify such direction to to fit your magnitude needs.
+When we want to do something along a direction, we don't want to add further changes than intended. A unit / normalized vector provides just a direction and then we can modify such direction to to fit your magnitude needs.
 
-## Length of a vectorin 2D (and 3D)
+## Length of a vector in 2D (and 3D)
 
 To normalize a vector we need the length of it. In 1D, the main component is already the scalar part of a vector, but in higher dimentions we need other things. We just use basic trigonometry, the Pythagorean Theorem:
 
@@ -96,9 +110,11 @@ vector2D u_final = u_point + o
 
 # Dot Product `dot(v1, v2) = v1 x v2`
 
-The most starightforward way of understanding a dot product is that we are projecting a vector over another. Imagine a light that shines perpendicular to `v1`, `v2` will cast a shadow over `v1` that will result in another vector that is a smaller version of `v1`.
+<img style="float: right" src="/assets/posts_images/02-MathGameDev01/DotProduct.png" width="30%"/>
 
-The result of the operation is a scalar value that indicates the percentage of `v1` that is obfuscated by `v2`.
+The most starightforward way of understanding a dot product for me is that we are projecting a vector over another. Imagine a light that shines perpendicular to `v1`, `v2` will cast a shadow over `v1` that will result in another vector that is a smaller or bigger version of `v1`.
+
+The result of the operation is a scalar value that indicates the percentage of `v1` that is obfuscated by `v2`. This value can also be negative if the vectors are going in different directions!
 
 ~~~c++
 vector2D v,u
@@ -116,3 +132,9 @@ What makes this operation extremely useful is that when we `normalize` the vecto
 This ends up helping us by using directly the value as a really fast indication of direction between those vectors.
 
 Further down the line we can obtain the `angle` between these two vectors in order to get detail information on direction, but taht will come in another post!
+
+# Afterwords
+
+This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.
+
+For any other person that does think this theme is useful to them, check [Freya Holmer's Youtube Channel](https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA), as most of her content is already uploaded there!

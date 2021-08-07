@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Math for GameDev - Part 1: Vectors &amp; Dot product | Marc Torres’ Devlog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Math for GameDev - Part 1: Vectors &amp; Dot product" />
+<meta name="author" content="Marc Torres Jimenez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:site_name" content="Marc Torres’ Devlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-08-06T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Math for GameDev - Part 1: Vectors &amp; Dot product" />
+<meta name="twitter:site" content="@MarcTorres_Dev" />
+<meta name="twitter:creator" content="@MarcTorres_Dev" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Math for GameDev - Part 1: Vectors &amp; Dot product","url":"/math/games/2021/08/06/MathForGameDev-1.html","datePublished":"2021-08-06T00:00:00+02:00","dateModified":"2021-08-06T14:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/math/games/2021/08/06/MathForGameDev-1.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"description":"Notes of Freya Holmer’s “Math for GameDev” series.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Marc Torres&#39; Devlog" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  math-for-gamedev-part-1-vectors-dot-product">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/"><i class="fas fa-home fa-2x"></i></a></li><li><a href="/posts/"><i class="fas fa-file-alt fa-2x"></i></a></li><li><a href="/categories/"><i class="fas fa-archive fa-2x"></i></a></li><li><a href="/tags/"><i class="fas fa-tags fa-2x"></i></a></li><li><a href="/about/"><i class="fas fa-user fa-2x"></i></a></li><li><a href="/search/"><i class="fas fa-search fa-2x"></i></a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+
+    <div id="main" class="main-content" aria-label="Content">
+  <div class="page-custom-post">
+
+    <!--
+-->
+    
+    
+      <h1 id="page-title" class="page-title p-name">Math for GameDev - Part 1: Vectors &amp; Dot product
+</h1>
+    
+    <hr>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#games" title="Pages filed under Games">Games</a></li><li class="page-taxonomy"><a class="p-category" href="/categories/#math" title="Pages filed under Math">Math</a></li>
+    </ul>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#game-development" title="Pages tagged game development" rel="tag">game development</a></li><li class="page-taxonomy"><a href="/tags/#introduction" title="Pages tagged introduction" rel="tag">introduction</a></li><li class="page-taxonomy"><a href="/tags/#math" title="Pages tagged math" rel="tag">math</a></li><li class="page-taxonomy"><a href="/tags/#trigonometry" title="Pages tagged trigonometry" rel="tag">trigonometry</a></li>
+    </ul>
+
+    <hr>
+    <p><a href="https://twitter.com/FreyaHolmer">Freya Holmer</a> published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</p>
+
+<h1 id="vectors-basics---1d">Vectors Basics - 1D</h1>
+
+<p><img src="/assets/posts_images/02-MathGameDev01/Vector1D.png" alt="" /></p>
+
+<p>Vectors by themselves just represent a point relative to an other origin point. In the base example, <code class="language-plaintext highlighter-rouge">v2</code> has the origin in <code class="language-plaintext highlighter-rouge">1</code> but ends in <code class="language-plaintext highlighter-rouge">-2</code>, the vector itself is <code class="language-plaintext highlighter-rouge">v2(-3)</code>. <code class="language-plaintext highlighter-rouge">v1</code> on the other hand starts at our arbitrary origin thus the component <code class="language-plaintext highlighter-rouge">x</code> being the representative of the vector itself <code class="language-plaintext highlighter-rouge">v1(2)</code>.</p>
+
+<p><img src="/assets/posts_images/02-MathGameDev01/length_sign_1D.png" alt="" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">length</code> : <strong>absolute</strong> magnitude or scalar size of a vector. Calculating the magnitude of a vector varies by dimentions, explained later.</li>
+  <li><code class="language-plaintext highlighter-rouge">absolute</code> : refering to the positive part of numbers, also known as unsigned.</li>
+  <li><code class="language-plaintext highlighter-rouge">direction</code> : unit representation of a vector</li>
+  <li><code class="language-plaintext highlighter-rouge">unit / normalized vector</code> : vector which its length is 1. Basically <code class="language-plaintext highlighter-rouge">v / length(v) = (vx / length(v), vy / length(v), ...)</code>h(v), …)`</li>
+  <li><code class="language-plaintext highlighter-rouge">sign(v)</code> : general representation of the direction of a vector. It should return a vector according to the vector dimention input, normalized (<code class="language-plaintext highlighter-rouge">length = 1</code>).
+    <ul>
+      <li>A <code class="language-plaintext highlighter-rouge">0 direction</code> vector, can be interpreted in a variety of way. Generally we want 1 to be returned in programming but your mileage may vary.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="/assets/posts_images/02-MathGameDev01/distance_1D.png" alt="" /></p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">distance</code> : length of the vector that joins two positions : <code class="language-plaintext highlighter-rouge">abs(length(vB - vA))</code></li>
+  <li><code class="language-plaintext highlighter-rouge">signed distance</code> : usually we use the positive term of a distance, sometimes we want also a negative want, thuse we don’t get the absolute : `length(vB - vA)</li>
+</ul>
+
+<p>When using more dimentions you will want to use different colors per dimention. Usually, we use <strong><span style="background:white"><span style="color:red">R</span><span style="color:green">G</span><span style="color:blue">B</span></span></strong> color space to map to <strong><span style="background:white"><span style="color:red">X</span><span style="color:green">Y</span><span style="color:blue">Z</span></span></strong> axis.</p>
+
+<p>Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.</p>
+
+<p>Vectors really define a point in space from a defined <code class="language-plaintext highlighter-rouge">0o</code> (Origin point).</p>
+
+<h1 id="2d-vectors---vector2dx-y">2D Vectors - <code class="language-plaintext highlighter-rouge">vector2D(x, y)</code></h1>
+
+<p><img src="/assets/posts_images/02-MathGameDev01/Vector2D.png" alt="" /></p>
+
+<p><strong>Addition:</strong> <code class="language-plaintext highlighter-rouge">v1 + v2 = (v1x + v2x, v1y + v2y)</code> - <strong>Commutative</strong> -&gt; <code class="language-plaintext highlighter-rouge">v1 + v2 = v2 + v1</code></p>
+
+<p><strong>Substraction:</strong> <code class="language-plaintext highlighter-rouge">v1 - v2 = (v1x - v2x, v1y - v2y)</code> - <strong>NON Commutative</strong> -&gt; <code class="language-plaintext highlighter-rouge">v1 - v2 != v2 - v1</code></p>
+<ul>
+  <li>Why not commutative? -&gt; We are changing the sign of v2 (negate components), then perform an addition of the vectors.</li>
+  <li>Ex: <code class="language-plaintext highlighter-rouge">(2,1) - (1,1) = (1, 0)</code> but <code class="language-plaintext highlighter-rouge">(1,1) - (2,1) = (-1,0)</code></li>
+</ul>
+
+<p><img src="/assets/posts_images/02-MathGameDev01/Vector2D_Scalar.png" alt="Scalar Multiplication" /></p>
+
+<p><strong>Scalar Multiplication:</strong> There are more types, but in the most basic is per component multiplication to scale it. <code class="language-plaintext highlighter-rouge">v1 * scalar = (v1.x * scalar, v1.y * scalar)</code> or <code class="language-plaintext highlighter-rouge">v1 * v2 = (v1.x * v2.x, v1.y * v2.y)</code>.</p>
+
+<p>Vector interpretation depends on its purpose, by themselves vectors don’t define anything but a point. Be clear about what a vector is supposed to be interpreted as (direction, translation, point, worldspace, localspace,…).</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">sign(vector2D(x,y))</code> : new we will be getting a <code class="language-plaintext highlighter-rouge">vector2D()</code> in its unit form : <code class="language-plaintext highlighter-rouge">v1 / length(v1)</code></li>
+</ul>
+
+<h2 id="why-are-normalized-vectors-useful">Why are Normalized vectors useful?</h2>
+
+<p>When we want to do something along a direction, we don’t want to add further changes than intended. A unit / normalized vector provides just a direction and then we can modify such direction to to fit your magnitude needs.</p>
+
+<h2 id="length-of-a-vector-in-2d-and-3d">Length of a vector in 2D (and 3D)</h2>
+
+<p>To normalize a vector we need the length of it. In 1D, the main component is already the scalar part of a vector, but in higher dimentions we need other things. We just use basic trigonometry, the Pythagorean Theorem:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector2D</span> <span class="n">v</span>
+<span class="n">v_length</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">x</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">v</span><span class="p">.</span><span class="n">y</span> <span class="o">^</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">vector3D</span> <span class="n">u</span>
+<span class="n">u_length</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">u</span><span class="p">.</span><span class="n">x</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">.</span><span class="n">y</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">.</span><span class="n">z</span> <span class="o">^</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>In higher dimentions, I really don’t know at this point, we’ll figure it out.</p>
+
+<h2 id="distance-between-2-vectors--lengthv2---v1">Distance between 2 Vectors = length(v2 - v1)</h2>
+
+<p>As stated in the beginning, the distance is the length of a vector that joins two points. A vector defines a point, thus a substraction between point2 and point1 will define a vector from point1 to point2. Then we have to get the length of the newly created vector:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector2D</span> <span class="n">v</span><span class="p">,</span><span class="n">u</span>
+<span class="n">distance_v_u</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span> <span class="n">vector2D</span><span class="p">(</span> <span class="n">u</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">v</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">v</span><span class="p">.</span><span class="n">y</span> <span class="p">)</span> <span class="p">)</span>
+
+<span class="n">distance_fun</span><span class="p">(</span> <span class="n">v</span> <span class="p">,</span> <span class="n">u</span> <span class="p">)</span>
+
+<span class="c1">// Same for 3D, but adding z component</span>
+</code></pre></div></div>
+
+<h2 id="example-point-along-a-direction">Example: Point along a direction</h2>
+
+<p>To get a point along a direction represented by an origin point <code class="language-plaintext highlighter-rouge">o</code> and an end point <code class="language-plaintext highlighter-rouge">v</code>:</p>
+<ul>
+  <li>Calculate vector <code class="language-plaintext highlighter-rouge">u</code> that joins those points</li>
+  <li>Get the normalized version of <code class="language-plaintext highlighter-rouge">u</code>, <code class="language-plaintext highlighter-rouge">u_norm</code></li>
+  <li>Multiply <code class="language-plaintext highlighter-rouge">u_norm</code> to know where to get a point <code class="language-plaintext highlighter-rouge">u_point</code></li>
+  <li>Add <code class="language-plaintext highlighter-rouge">o</code> to <code class="language-plaintext highlighter-rouge">u_point</code>, to get final point <code class="language-plaintext highlighter-rouge">u_final</code></li>
+  <li>Congrats you have got a point between <code class="language-plaintext highlighter-rouge">0o</code> and <code class="language-plaintext highlighter-rouge">v</code></li>
+</ul>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector2D</span> <span class="n">o</span><span class="p">,</span><span class="n">v</span>
+<span class="n">vector2D</span> <span class="n">u</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">o</span>
+<span class="kt">float</span> <span class="n">length_u</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">u</span><span class="p">.</span><span class="n">x</span> <span class="o">^</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">u</span><span class="p">.</span><span class="n">y</span> <span class="o">^</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">vector2D</span> <span class="n">u_norm</span> <span class="o">=</span> <span class="n">u</span> <span class="o">/</span> <span class="n">length_u</span>
+<span class="kt">float</span> <span class="n">scalar_value</span> <span class="o">=</span> <span class="n">RandomValue</span><span class="p">()</span>
+<span class="n">vector2D</span> <span class="n">u_point</span> <span class="o">=</span> <span class="n">u_norm</span> <span class="o">*</span> <span class="n">scalar_value</span>
+<span class="n">vector2D</span> <span class="n">u_final</span> <span class="o">=</span> <span class="n">u_point</span> <span class="o">+</span> <span class="n">o</span>
+</code></pre></div></div>
+
+<h1 id="dot-product-dotv1-v2--v1-x-v2">Dot Product <code class="language-plaintext highlighter-rouge">dot(v1, v2) = v1 x v2</code></h1>
+
+<p><img style="float: right" src="/assets/posts_images/02-MathGameDev01/DotProduct.png" width="30%" /></p>
+
+<p>The most starightforward way of understanding a dot product for me is that we are projecting a vector over another. Imagine a light that shines perpendicular to <code class="language-plaintext highlighter-rouge">v1</code>, <code class="language-plaintext highlighter-rouge">v2</code> will cast a shadow over <code class="language-plaintext highlighter-rouge">v1</code> that will result in another vector that is a smaller or bigger version of <code class="language-plaintext highlighter-rouge">v1</code>.</p>
+
+<p>The result of the operation is a scalar value that indicates the percentage of <code class="language-plaintext highlighter-rouge">v1</code> that is obfuscated by <code class="language-plaintext highlighter-rouge">v2</code>. This value can also be negative if the vectors are going in different directions!</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">vector2D</span> <span class="n">v</span><span class="p">,</span><span class="n">u</span>
+<span class="n">dot_u_v</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">u</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">u</span><span class="p">.</span><span class="n">y</span>
+</code></pre></div></div>
+
+<h2 id="use-case-1-squared-unsigned-distance-of-a-vector">Use Case 1: Squared Unsigned Distance of a Vector</h2>
+
+<p>If we run that operation by making sure that <code class="language-plaintext highlighter-rouge">u = v</code>, we get the same operation as the length without computing the squared root of it. In some cases, computing the square root is more costly that squaring up the value we want to compare!</p>
+
+<h2 id="use-case-2-direction-difference-between-2-vectors">Use Case 2: Direction difference between 2 vectors</h2>
+
+<p>What makes this operation extremely useful is that when we <code class="language-plaintext highlighter-rouge">normalize</code> the vectors and perform the operation, we are returned the cosine of the angle bewteen the vectors!</p>
+
+<p>This ends up helping us by using directly the value as a really fast indication of direction between those vectors.</p>
+
+<p>Further down the line we can obtain the <code class="language-plaintext highlighter-rouge">angle</code> between these two vectors in order to get detail information on direction, but taht will come in another post!</p>
+
+<h1 id="afterwords">Afterwords</h1>
+
+<p>This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.</p>
+
+<p>For any other person that does think this theme is useful to them, check <a href="https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA">Freya Holmer’s Youtube Channel</a>, as most of her content is already uploaded there!</p>
+
+
+    <hr>
+
+    <div align="center">
+    
+      <div class="page-share">
+  <a href="https://twitter.com/intent/tweet?text=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product%20%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product&url=%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+    
+    </div>
+
+    
+
+    <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/web/2021/07/21/Setup.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Getting this blog setup
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+  </div !-- Custom Post-->
+</div !-- Main -->
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/MarcTorres_Dev"><i class="fab fa-twitter fa-3x" alt="Twitter"></i></a><a class="social-icon" href="https://instagram.com/MarcTorresDev"><i class="fab fa-instagram fa-3x" alt="Instagram"></i></a><a class="social-icon" href="https://github.com/MarcFly"><i class="fab fa-github fa-3x" alt="GitHub"></i></a><a class="social-icon" href="https://twitch.tv/MarcTorres_Dev"><i class="fab fa-twitch fa-3x" alt="Twitch"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2021 Marc Torres' Devlog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>

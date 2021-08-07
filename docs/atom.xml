@@ -1,4 +1,138 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-06T20:48:26+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-07T15:22:26+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Math for GameDev - Part 1: Vectors &amp;amp; Dot product</title><link href="/math/games/2021/08/06/MathForGameDev-1.html" rel="alternate" type="text/html" title="Math for GameDev - Part 1: Vectors &amp;amp; Dot product" /><published>2021-08-06T00:00:00+02:00</published><updated>2021-08-06T14:00:00+02:00</updated><id>/math/games/2021/08/06/MathForGameDev-1</id><content type="html" xml:base="/math/games/2021/08/06/MathForGameDev-1.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
+
+&lt;h1 id=&quot;vectors-basics---1d&quot;&gt;Vectors Basics - 1D&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/Vector1D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vectors by themselves just represent a point relative to an other origin point. In the base example, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v2&lt;/code&gt; has the origin in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1&lt;/code&gt; but ends in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-2&lt;/code&gt;, the vector itself is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v2(-3)&lt;/code&gt;. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1&lt;/code&gt; on the other hand starts at our arbitrary origin thus the component &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;x&lt;/code&gt; being the representative of the vector itself &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1(2)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/length_sign_1D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;length&lt;/code&gt; : &lt;strong&gt;absolute&lt;/strong&gt; magnitude or scalar size of a vector. Calculating the magnitude of a vector varies by dimentions, explained later.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;absolute&lt;/code&gt; : refering to the positive part of numbers, also known as unsigned.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;direction&lt;/code&gt; : unit representation of a vector&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;unit / normalized vector&lt;/code&gt; : vector which its length is 1. Basically &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v / length(v) = (vx / length(v), vy / length(v), ...)&lt;/code&gt;h(v), …)`&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sign(v)&lt;/code&gt; : general representation of the direction of a vector. It should return a vector according to the vector dimention input, normalized (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;length = 1&lt;/code&gt;).
+    &lt;ul&gt;
+      &lt;li&gt;A &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0 direction&lt;/code&gt; vector, can be interpreted in a variety of way. Generally we want 1 to be returned in programming but your mileage may vary.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/distance_1D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;distance&lt;/code&gt; : length of the vector that joins two positions : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;abs(length(vB - vA))&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;signed distance&lt;/code&gt; : usually we use the positive term of a distance, sometimes we want also a negative want, thuse we don’t get the absolute : `length(vB - vA)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When using more dimentions you will want to use different colors per dimention. Usually, we use &lt;strong&gt;&lt;span style=&quot;background:white&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;R&lt;/span&gt;&lt;span style=&quot;color:green&quot;&gt;G&lt;/span&gt;&lt;span style=&quot;color:blue&quot;&gt;B&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt; color space to map to &lt;strong&gt;&lt;span style=&quot;background:white&quot;&gt;&lt;span style=&quot;color:red&quot;&gt;X&lt;/span&gt;&lt;span style=&quot;color:green&quot;&gt;Y&lt;/span&gt;&lt;span style=&quot;color:blue&quot;&gt;Z&lt;/span&gt;&lt;/span&gt;&lt;/strong&gt; axis.&lt;/p&gt;
+
+&lt;p&gt;Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.&lt;/p&gt;
+
+&lt;p&gt;Vectors really define a point in space from a defined &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0o&lt;/code&gt; (Origin point).&lt;/p&gt;
+
+&lt;h1 id=&quot;2d-vectors---vector2dx-y&quot;&gt;2D Vectors - &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vector2D(x, y)&lt;/code&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/Vector2D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Addition:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 + v2 = (v1x + v2x, v1y + v2y)&lt;/code&gt; - &lt;strong&gt;Commutative&lt;/strong&gt; -&amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 + v2 = v2 + v1&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Substraction:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 - v2 = (v1x - v2x, v1y - v2y)&lt;/code&gt; - &lt;strong&gt;NON Commutative&lt;/strong&gt; -&amp;gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 - v2 != v2 - v1&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Why not commutative? -&amp;gt; We are changing the sign of v2 (negate components), then perform an addition of the vectors.&lt;/li&gt;
+  &lt;li&gt;Ex: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(2,1) - (1,1) = (1, 0)&lt;/code&gt; but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(1,1) - (2,1) = (-1,0)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/Vector2D_Scalar.png&quot; alt=&quot;Scalar Multiplication&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Scalar Multiplication:&lt;/strong&gt; There are more types, but in the most basic is per component multiplication to scale it. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 * scalar = (v1.x * scalar, v1.y * scalar)&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 * v2 = (v1.x * v2.x, v1.y * v2.y)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Vector interpretation depends on its purpose, by themselves vectors don’t define anything but a point. Be clear about what a vector is supposed to be interpreted as (direction, translation, point, worldspace, localspace,…).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sign(vector2D(x,y))&lt;/code&gt; : new we will be getting a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vector2D()&lt;/code&gt; in its unit form : &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1 / length(v1)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;why-are-normalized-vectors-useful&quot;&gt;Why are Normalized vectors useful?&lt;/h2&gt;
+
+&lt;p&gt;When we want to do something along a direction, we don’t want to add further changes than intended. A unit / normalized vector provides just a direction and then we can modify such direction to to fit your magnitude needs.&lt;/p&gt;
+
+&lt;h2 id=&quot;length-of-a-vector-in-2d-and-3d&quot;&gt;Length of a vector in 2D (and 3D)&lt;/h2&gt;
+
+&lt;p&gt;To normalize a vector we need the length of it. In 1D, the main component is already the scalar part of a vector, but in higher dimentions we need other things. We just use basic trigonometry, the Pythagorean Theorem:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;v_length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;vector3D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;u_length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In higher dimentions, I really don’t know at this point, we’ll figure it out.&lt;/p&gt;
+
+&lt;h2 id=&quot;distance-between-2-vectors--lengthv2---v1&quot;&gt;Distance between 2 Vectors = length(v2 - v1)&lt;/h2&gt;
+
+&lt;p&gt;As stated in the beginning, the distance is the length of a vector that joins two points. A vector defines a point, thus a substraction between point2 and point1 will define a vector from point1 to point2. Then we have to get the length of the newly created vector:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;distance_v_u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;distance_fun&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Same for 3D, but adding z component&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;example-point-along-a-direction&quot;&gt;Example: Point along a direction&lt;/h2&gt;
+
+&lt;p&gt;To get a point along a direction represented by an origin point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;o&lt;/code&gt; and an end point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt;:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Calculate vector &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u&lt;/code&gt; that joins those points&lt;/li&gt;
+  &lt;li&gt;Get the normalized version of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u_norm&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Multiply &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u_norm&lt;/code&gt; to know where to get a point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u_point&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;o&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u_point&lt;/code&gt;, to get final point &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u_final&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Congrats you have got a point between &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0o&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length_u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_norm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length_u&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalar_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RandomValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_norm&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;scalar_value&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_final&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;dot-product-dotv1-v2--v1-x-v2&quot;&gt;Dot Product &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dot(v1, v2) = v1 x v2&lt;/code&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;img style=&quot;float: right&quot; src=&quot;/assets/posts_images/02-MathGameDev01/DotProduct.png&quot; width=&quot;30%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The most starightforward way of understanding a dot product for me is that we are projecting a vector over another. Imagine a light that shines perpendicular to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v2&lt;/code&gt; will cast a shadow over &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1&lt;/code&gt; that will result in another vector that is a smaller or bigger version of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The result of the operation is a scalar value that indicates the percentage of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v1&lt;/code&gt; that is obfuscated by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v2&lt;/code&gt;. This value can also be negative if the vectors are going in different directions!&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dot_u_v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;u&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;use-case-1-squared-unsigned-distance-of-a-vector&quot;&gt;Use Case 1: Squared Unsigned Distance of a Vector&lt;/h2&gt;
+
+&lt;p&gt;If we run that operation by making sure that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;u = v&lt;/code&gt;, we get the same operation as the length without computing the squared root of it. In some cases, computing the square root is more costly that squaring up the value we want to compare!&lt;/p&gt;
+
+&lt;h2 id=&quot;use-case-2-direction-difference-between-2-vectors&quot;&gt;Use Case 2: Direction difference between 2 vectors&lt;/h2&gt;
+
+&lt;p&gt;What makes this operation extremely useful is that when we &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;normalize&lt;/code&gt; the vectors and perform the operation, we are returned the cosine of the angle bewteen the vectors!&lt;/p&gt;
+
+&lt;p&gt;This ends up helping us by using directly the value as a really fast indication of direction between those vectors.&lt;/p&gt;
+
+&lt;p&gt;Further down the line we can obtain the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;angle&lt;/code&gt; between these two vectors in order to get detail information on direction, but taht will come in another post!&lt;/p&gt;
+
+&lt;h1 id=&quot;afterwords&quot;&gt;Afterwords&lt;/h1&gt;
+
+&lt;p&gt;This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.&lt;/p&gt;
+
+&lt;p&gt;For any other person that does think this theme is useful to them, check &lt;a href=&quot;https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA&quot;&gt;Freya Holmer’s Youtube Channel&lt;/a&gt;, as most of her content is already uploaded there!&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="Games" /><category term="math" /><category term="game development" /><category term="trigonometry" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
 
 &lt;p&gt;For this you will need any text editor and just knowing that the terminal exist, where you write words and things go boom or vroom.&lt;/p&gt;
 
@@ -63,7 +197,7 @@ jekyll new &amp;lt;blogname&amp;gt; &lt;span class=&quot;c&quot;&gt;#--blank #Op
 &lt;p&gt;Then you can preview it by executing and going to &lt;strong&gt;&lt;a href=&quot;localhost:4000&quot;&gt;localhost:4000&lt;/a&gt;&lt;/strong&gt; on you browser&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll serve
-&lt;span class=&quot;c&quot;&gt;# If you don&apos;t have a theme, ignore &amp;lt;bundle exec&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# If you don't have a theme, ignore &amp;lt;bundle exec&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;With that you are already done, you can start writing posts and whatever you want!&lt;/p&gt;
@@ -86,7 +220,7 @@ jekyll new &amp;lt;blogname&amp;gt; &lt;span class=&quot;c&quot;&gt;#--blank #Op
 
 &lt;span class=&quot;gh&quot;&gt;# Content Starts Here!&lt;/span&gt;
 
-lorem ipsum whatever i don&apos;t remeber more than the start...
+lorem ipsum whatever i don't remeber more than the start...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Each file will have a header in which the parsing information will be setup. Depending on the theme there will be different layout options and exclusive options to be filled. For example in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SO Simple&lt;/code&gt; theme, there are categories and tags that can be written to then have an easier way to seach and filter posts.&lt;/p&gt;
