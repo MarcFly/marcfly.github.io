@@ -133,6 +133,65 @@ This ends up helping us by using directly the value as a really fast indication 
 
 Further down the line we can obtain the `angle` between these two vectors in order to get detail information on direction, but taht will come in another post!
 
+
+# Exercise 1: Radial Trigger
+
+Detect wether a point is inside or outside a circle
+
+~~~c++
+Vector2D circle_pos;
+float r;
+Vector2D mouse_game_space;
+
+float dist = length(mouse_pos - circle_pos);
+if(dist <= r)
+    log("we are in!");
+~~~
+
+# Exercise 2: Look at Trigger
+
+Given a direction and mouse position, know if the direction is looking towards the mouse based on a threshold. Threshold goes form 0 to 1, 1 is super strict (exact direction) and 0 it means perpendicular or closer is looking at mouse.
+
+~~~c++
+Vector2D player_pos;
+Vector2D player_dir;
+Vector2D mouse_game_space;
+
+float threshold;
+
+Vector2D player_mouse_v = mouse_game_space - player_pos;
+float dot_value = dot( normalize(player_dir), normalize(player_mouse_v) );
+
+if(dot_value > abs(threshold) && dot_value > 0)
+    log("we are looking to trigger!");
+~~~
+
+# Exercise 3: Transform Space of a Point
+
+Given an arbitrary origin (0,0), an object with a certain position and direction, and a point that is expressed with the object as origin; express the point in origin coordinates (including rotation and translation).
+
+~~~c++
+Vector2D object_pos, object_up, object_right; // Obejct values are expressed in world space
+Vector2D point_world_space;
+
+// 1 - From world to local space
+// Translate to Object Space
+Vector2D point_obj_sp = point_world_space + object_pos;
+// Move along axis of object
+Vector2D point_local;
+point_local.x = dot(point_obj_sp, object_right);
+point_local.y = dot(point_obj_sp, object_up);
+
+// 2 - From local to world space
+// Get from object_space to point space using object axis
+Vector2D object_x_axis_point = object_right * point_local.x;
+Vector2D object_y_axis_point = object_up * point_local.y;
+// These 2 vectors, represent the 2 translations in world space from the worldspace position of the object, to the world position of the point
+Vector2D local_point = object_x_axis_point + object_y_axis_point;
+// Then to put into full world space, we translate back as if it was from origin
+Vector2D world_point = local_point + object_pos;
+~~~
+
 # Afterwords
 
 This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.
