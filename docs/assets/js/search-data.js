@@ -5,7 +5,12 @@ var store = [{
         "url": "/web/2021/07/21/Setup.html"
       },{
         "title": "Math for GameDev - Part 1: Vectors & Dot product",
-        "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Vectors Basics - 1D Vectors...","categories": ["Math","Games"],
-        "tags": ["math","game development","trigonometry","introduction"],
-        "url": "/math/games/2021/08/06/MathForGameDev-1.html"
+        "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Vectors Basics - 1D Vectors...","categories": ["Math"],
+        "tags": ["math","game development","introduction"],
+        "url": "/math/2021/08/06/MathForGameDev-1.html"
+      },{
+        "title": "Math for GameDev - Part 2: Spaces, Matrices & Cross Product",
+        "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. SPACES - From Part 1....","categories": ["Math"],
+        "tags": ["math","game development","introduction"],
+        "url": "/math/2021/08/10/MathForGamedev-2.html"
       },]

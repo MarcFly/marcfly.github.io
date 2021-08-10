@@ -3,13 +3,10 @@ title: "Math for GameDev - Part 1: Vectors & Dot product"
 description: Notes of Freya Holmer's "Math for GameDev" series.
 categories:
  - Math
- - Games
 tags:
  - math
  - game development
- - trigonometry
  - introduction
-last_modified_at: 2021-08-06T11:00:00-01:00
 ---
 
 [Freya Holmer](https://twitter.com/FreyaHolmer) published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.
@@ -39,6 +36,8 @@ When using more dimentions you will want to use different colors per dimention. 
 Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.
 
 Vectors really define a point in space from a defined `0o` (Origin point).
+
+---
 
 # 2D Vectors - `vector2D(x, y)`
 
@@ -108,7 +107,9 @@ vector2D u_point = u_norm * scalar_value
 vector2D u_final = u_point + o
 ~~~
 
-# Dot Product `dot(v1, v2) = v1 x v2`
+---
+
+# Dot Product `dot(v1, v2) = v1 * v2 = scalar_value`
 
 <img style="float: right" src="/assets/posts_images/02-MathGameDev01/DotProduct.png" width="30%"/>
 
@@ -133,6 +134,7 @@ This ends up helping us by using directly the value as a really fast indication 
 
 Further down the line we can obtain the `angle` between these two vectors in order to get detail information on direction, but taht will come in another post!
 
+---
 
 # Exercise 1: Radial Trigger
 
@@ -151,6 +153,8 @@ if(dist <= r)
 <p align="center">
 <img src="/assets/posts_images/02-MathGameDev01/RadialTrigger.png" width="70%"/>
 </p>
+
+---
 
 # Exercise 2: Look at Trigger
 
@@ -174,6 +178,7 @@ if(dot_value > abs(threshold) && dot_value > 0)
 <img src="/assets/posts_images/02-MathGameDev01/LookAtTrigger.png" width="70%"/>
 </p>
 
+---
 
 # Exercise 3: Transform Space of a Point
 
@@ -204,6 +209,8 @@ Vector2D world_point = local_point + object_pos;
 <p align="center">
 <img src="/assets/posts_images/02-MathGameDev01/TransformSpace.png" width="70%"/>
 </p>
+
+---
 
 # Afterwords
 

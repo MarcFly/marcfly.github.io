@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product | Marc Torres’ Devlog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product" />
+<meta name="author" content="Marc Torres Jimenez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:site_name" content="Marc Torres’ Devlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-08-10T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product" />
+<meta name="twitter:site" content="@MarcTorres_Dev" />
+<meta name="twitter:creator" content="@MarcTorres_Dev" />
+<script type="application/ld+json">
+{"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","headline":"Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product","dateModified":"2021-08-10T00:00:00+02:00","datePublished":"2021-08-10T00:00:00+02:00","description":"Notes of Freya Holmer’s “Math for GameDev” series.","mainEntityOfPage":{"@type":"WebPage","@id":"/math/2021/08/10/MathForGamedev-2.html"},"url":"/math/2021/08/10/MathForGamedev-2.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Marc Torres&#39; Devlog" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  math-for-gamedev-part-2-spaces-matrices-cross-product">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/"><i class="fas fa-home fa-2x"></i></a></li><li><a href="/posts/"><i class="fas fa-file-alt fa-2x"></i></a></li><li><a href="/categories/"><i class="fas fa-archive fa-2x"></i></a></li><li><a href="/tags/"><i class="fas fa-tags fa-2x"></i></a></li><li><a href="/about/"><i class="fas fa-user fa-2x"></i></a></li><li><a href="/search/"><i class="fas fa-search fa-2x"></i></a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+
+    <div id="main" class="main-content" aria-label="Content">
+  <div class="page-custom-post">
+
+    <!--
+-->
+    
+    
+      <h1 id="page-title" class="page-title p-name">Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product
+</h1>
+    
+    <hr>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#math" title="Pages filed under Math">Math</a></li>
+    </ul>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#game-development" title="Pages tagged game development" rel="tag">game development</a></li><li class="page-taxonomy"><a href="/tags/#introduction" title="Pages tagged introduction" rel="tag">introduction</a></li><li class="page-taxonomy"><a href="/tags/#math" title="Pages tagged math" rel="tag">math</a></li>
+    </ul>
+
+    <hr>
+    <p><a href="https://twitter.com/FreyaHolmer">Freya Holmer</a> published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</p>
+
+<h1 id="spaces---from-part-1-ex3">SPACES - From Part 1. Ex.3</h1>
+
+<p>Most things are relative to others. When we decide that an object has a certain position, that is relative to our <code class="language-plaintext highlighter-rouge">WorldSpace</code> defined by our main axis <code class="language-plaintext highlighter-rouge">X(1,0,0) , Y(0,1,0) , Z(0,0,1)</code>. But that space can also be relative to another object, axis or space that we define.</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">world space</code> : usually referred to the global space where everything is contained</li>
+  <li><code class="language-plaintext highlighter-rouge">local space</code> : relative to another space (object, axis, coordinate system,…)</li>
+</ul>
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/TransformSpace.png" width="70%" />
+</p>
+<p><strong>DEFINE IN VARIABLES WHICH SPACE YOU ARE WORKING IN !</strong></p>
+
+<h2 id="inconsistencies---engines-libraries-and-tools">Inconsistencies - Engines, Libraries and Tools</h2>
+
+<p>There is a concept for defining the world space and rotations called the “The Right Hand Rule”. This concept is bullcrap because everyone uses it in different ways, so there is “The Left Hand Rule” as well as modified positions. Just know that <em>I</em> am used to the previous world space referred (<code class="language-plaintext highlighter-rouge">X = Right, Y = Up, Z = Forward</code>) but some engines, libraries and tools do things in other ways and you have to get used to their space.</p>
+
+<p>This will be further explained with the <code class="language-plaintext highlighter-rouge">cross product</code>.</p>
+
+<hr />
+
+<h1 id="matrices">Matrices</h1>
+
+<p>When we define a world orientation and axis, we are defining the <code class="language-plaintext highlighter-rouge">basis vectors</code> which are the ones that define the pillars of the world space, in my case I decidedd <code class="language-plaintext highlighter-rouge">X(1,0,0) , Y(0,1,0) , Z(0,0,1)</code>.</p>
+
+<p><img style="float: right" src="/assets/posts_images/03-MathGameDev02/MatrixExample.png" width="40%" /></p>
+
+<p>To define an object in said space, we need to define a position relative to that, its rotation in their world and a scale for the object. That composition of data is called a <code class="language-plaintext highlighter-rouge">Transform</code> which is stored in a matrix.</p>
+
+<p>When storing such <code class="language-plaintext highlighter-rouge">Transform</code> we are saving the <code class="language-plaintext highlighter-rouge">basis vectors</code> of the object which are relative to another space.</p>
+
+<h2 id="data-layout">Data Layout</h2>
+
+<p>Understanding first that matrices represent an array of value in <code class="language-plaintext highlighter-rouge">n</code> dimentions, such as that we can obtain values as we would in an array (<code class="language-plaintext highlighter-rouge">mat4x4 ~= arr[4][4</code>) we can now understand the layout for further operations.</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Right Vector = {mat[0][0], mat[2][0]}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Up Vector = {mat[0][1], mat[2][1]}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Forward Vector = {mat[0][2], mat[2][2]}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Position = {mat[3][0], mat[3][2]}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">Scale</code> : The scaling part of the matrix is baked into the vectors. To determine a rotatio or orientation, each vector has to be normalized, then it can be scale by the expected values. Ex: <code class="language-plaintext highlighter-rouge">Scale(3,2,1) -&gt; Right(3,0,0), Up(0,2,0), Forward(0,0,1)</code></li>
+  <li><code class="language-plaintext highlighter-rouge">mat[3][0] -&gt; mat[3][3]</code> : These values are usually not used for the concept of space transformations in gamedev. Just know that in 90% of your cases it will be <code class="language-plaintext highlighter-rouge">(0,0,0,1)</code></li>
+</ul>
+
+<h2 id="why-matrices">Why Matrices?</h2>
+
+<p>Because we can multiply matrices by a vector and obtain another vector. Basically, we are transforming a vector into the space defined by the matrix!</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Matrix4x4</span> <span class="n">mat</span><span class="p">;</span>
+<span class="n">Vector4</span> <span class="n">v</span><span class="p">;</span> <span class="c1">// (x,y,z,w)</span>
+
+<span class="n">Vector4</span> <span class="n">result</span> <span class="o">=</span> <span class="n">mat</span> <span class="o">*</span> <span class="n">v</span><span class="p">;</span>
+<span class="cm">/*
+    mat * v
+    {
+        result.x = mat[0,0]*v.x + mat[0][1]*v.y + mat[0][2]*v.z + mat[0][3]*v.w;
+        result.y = mat[1,0]*v.x + mat[1][1]*v.y + mat[1][2]*v.z + mat[1][3]*v.w;
+        result.z = mat[2,0]*v.x + mat[2][1]*v.y + mat[2][2]*v.z + mat[2][3]*v.w;
+        result.w = mat[3,0]*v.x + mat[3][1]*v.y + mat[3][2]*v.z + mat[3][3]*v.w; 
+    }
+*/</span>
+</code></pre></div></div>
+
+<p>The newly added 4th coordinate to the <code class="language-plaintext highlighter-rouge">Vector4</code> serves right now to determine if we want to use the position in order to transform the vector. If <code class="language-plaintext highlighter-rouge">w = 0</code> the last operation will not take the position in the matrix into account (<code class="language-plaintext highlighter-rouge">mat[0-2][2]</code>).</p>
+
+<p>When we are transform from <code class="language-plaintext highlighter-rouge">Local</code> to <code class="language-plaintext highlighter-rouge">World</code> we apply the multiplication directly, but when we do the inverse we apply the inverse matrix to it!</p>
+
+<p><code class="language-plaintext highlighter-rouge">most enignes and libraries will provide a way to invert a matrix or have it cached every time is changed...</code></p>
+
+<h2 id="a-small-tangent">A small “Tangent”</h2>
+
+<p>Sometimes we just want to represent a rotation, which does not require the full <code class="language-plaintext highlighter-rouge">Matrix4x4</code> and a <code class="language-plaintext highlighter-rouge">Vector4</code>. For that we can define a <code class="language-plaintext highlighter-rouge">Matrix3x3</code> which contains such direction vectors:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Normal</code> : Vector that goes up from a surface</li>
+  <li><code class="language-plaintext highlighter-rouge">Tangent</code> : Vector that is parallel to the surface or point and perpendicular to <code class="language-plaintext highlighter-rouge">Normal</code></li>
+  <li><code class="language-plaintext highlighter-rouge">BiTangent</code> : Vector that is perpendicular to <code class="language-plaintext highlighter-rouge">Tangent</code> and <code class="language-plaintext highlighter-rouge">Normal</code></li>
+</ul>
+
+<hr />
+
+<h1 id="cross-product-crossab--a-x-b--vector">Cross Product <code class="language-plaintext highlighter-rouge">cross(a,b) = A x B = Vector</code></h1>
+
+<p>Another way of multiplying vectors, yey! Given 2 vectors that are not equal, we can calculate a perpendicular one!</p>
+
+<h2 id="the-rightleft-hand-rule">The Right/Left Hand rule</h2>
+
+<p>In Physics/Math there is the concept of the Left/Right hand rule to determine how some forces interact in different axis. For game you will have to adapt to whatever rule the creator decided on, as each component can very well be flipped in either their positive or negative poles or even flipping hand and axis naming.</p>
+
+<p><img style="float: right" src="/assets/posts_images/03-MathGameDev02/HandRuleComparisons.jpg" width="60%" /></p>
+
+<p><img src="/assets/posts_images/03-MathGameDev02/LeftHandRule.png" width="31%" /></p>
+
+<p>If we input the vectors in the order that the rule is set int he tool, the result of the <code class="language-plaintext highlighter-rouge">Cross Product</code> will be perpendicular positive to the other two.</p>
+
+<h2 id="calculating-the-cross-product">Calculating the Cross Product</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector3</span> <span class="nf">cross</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">a</span><span class="p">,</span> <span class="n">Vector3</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector3</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">a</span><span class="p">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">z</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+    <span class="n">ret</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Second Definition of Cross Product = |a x b| = |a| * |b| * sin(angle_ab)</span>
+<span class="kt">float</span> <span class="nf">AngleBetween</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">a</span><span class="p">,</span> <span class="n">Vector3</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Vector3</span> <span class="n">cross</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">sin_angle_ab</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">length</span><span class="p">(</span><span class="n">b</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">arc_sin</span><span class="p">(</span><span class="n">sin_angle_ab</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="afterwords">Afterwords</h1>
+
+<p>This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.</p>
+
+<p>For any other person that does think this theme is useful to them, check <a href="https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA">Freya Holmer’s Youtube Channel</a>, as most of her content is already uploaded there!</p>
+
+
+    <hr>
+
+    <div align="center">
+    
+      <div class="page-share">
+  <a href="https://twitter.com/intent/tweet?text=Math+for+GameDev+-+Part+2%3A+Spaces%2C+Matrices+%26+Cross+Product%20%2Fmath%2F2021%2F08%2F10%2FMathForGamedev-2.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmath%2F2021%2F08%2F10%2FMathForGamedev-2.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Math+for+GameDev+-+Part+2%3A+Spaces%2C+Matrices+%26+Cross+Product&url=%2Fmath%2F2021%2F08%2F10%2FMathForGamedev-2.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+    
+    </div>
+
+    
+
+    <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/math/2021/08/06/MathForGameDev-1.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Math for GameDev - Part 1: Vectors &amp; Dot product
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+  </div !-- Custom Post-->
+</div !-- Main -->
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/MarcTorres_Dev"><i class="fab fa-twitter fa-3x" alt="Twitter"></i></a><a class="social-icon" href="https://instagram.com/MarcTorresDev"><i class="fab fa-instagram fa-3x" alt="Instagram"></i></a><a class="social-icon" href="https://github.com/MarcFly"><i class="fab fa-github fa-3x" alt="GitHub"></i></a><a class="social-icon" href="https://twitch.tv/MarcTorres_Dev"><i class="fab fa-twitch fa-3x" alt="Twitch"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2021 Marc Torres' Devlog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>

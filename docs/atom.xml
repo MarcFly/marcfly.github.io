@@ -1,4 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-10T13:14:46+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Math for GameDev - Part 1: Vectors &amp;amp; Dot product</title><link href="/math/games/2021/08/06/MathForGameDev-1.html" rel="alternate" type="text/html" title="Math for GameDev - Part 1: Vectors &amp;amp; Dot product" /><published>2021-08-06T00:00:00+02:00</published><updated>2021-08-06T14:00:00+02:00</updated><id>/math/games/2021/08/06/MathForGameDev-1</id><content type="html" xml:base="/math/games/2021/08/06/MathForGameDev-1.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-10T16:19:03+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Math for GameDev - Part 2: Spaces, Matrices &amp;amp; Cross Product</title><link href="/math/2021/08/10/MathForGamedev-2.html" rel="alternate" type="text/html" title="Math for GameDev - Part 2: Spaces, Matrices &amp;amp; Cross Product" /><published>2021-08-10T00:00:00+02:00</published><updated>2021-08-10T00:00:00+02:00</updated><id>/math/2021/08/10/MathForGamedev-2</id><content type="html" xml:base="/math/2021/08/10/MathForGamedev-2.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
+
+&lt;h1 id=&quot;spaces---from-part-1-ex3&quot;&gt;SPACES - From Part 1. Ex.3&lt;/h1&gt;
+
+&lt;p&gt;Most things are relative to others. When we decide that an object has a certain position, that is relative to our &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;WorldSpace&lt;/code&gt; defined by our main axis &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;X(1,0,0) , Y(0,1,0) , Z(0,0,1)&lt;/code&gt;. But that space can also be relative to another object, axis or space that we define.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;world space&lt;/code&gt; : usually referred to the global space where everything is contained&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;local space&lt;/code&gt; : relative to another space (object, axis, coordinate system,…)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+&lt;img src=&quot;/assets/posts_images/03-MathGameDev02/TransformSpace.png&quot; width=&quot;70%&quot; /&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DEFINE IN VARIABLES WHICH SPACE YOU ARE WORKING IN !&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;inconsistencies---engines-libraries-and-tools&quot;&gt;Inconsistencies - Engines, Libraries and Tools&lt;/h2&gt;
+
+&lt;p&gt;There is a concept for defining the world space and rotations called the “The Right Hand Rule”. This concept is bullcrap because everyone uses it in different ways, so there is “The Left Hand Rule” as well as modified positions. Just know that &lt;em&gt;I&lt;/em&gt; am used to the previous world space referred (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;X = Right, Y = Up, Z = Forward&lt;/code&gt;) but some engines, libraries and tools do things in other ways and you have to get used to their space.&lt;/p&gt;
+
+&lt;p&gt;This will be further explained with the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cross product&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;matrices&quot;&gt;Matrices&lt;/h1&gt;
+
+&lt;p&gt;When we define a world orientation and axis, we are defining the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;basis vectors&lt;/code&gt; which are the ones that define the pillars of the world space, in my case I decidedd &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;X(1,0,0) , Y(0,1,0) , Z(0,0,1)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img style=&quot;float: right&quot; src=&quot;/assets/posts_images/03-MathGameDev02/MatrixExample.png&quot; width=&quot;40%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To define an object in said space, we need to define a position relative to that, its rotation in their world and a scale for the object. That composition of data is called a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transform&lt;/code&gt; which is stored in a matrix.&lt;/p&gt;
+
+&lt;p&gt;When storing such &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Transform&lt;/code&gt; we are saving the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;basis vectors&lt;/code&gt; of the object which are relative to another space.&lt;/p&gt;
+
+&lt;h2 id=&quot;data-layout&quot;&gt;Data Layout&lt;/h2&gt;
+
+&lt;p&gt;Understanding first that matrices represent an array of value in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;n&lt;/code&gt; dimentions, such as that we can obtain values as we would in an array (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mat4x4 ~= arr[4][4&lt;/code&gt;) we can now understand the layout for further operations.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Right Vector = {mat[0][0], mat[2][0]}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Up Vector = {mat[0][1], mat[2][1]}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Forward Vector = {mat[0][2], mat[2][2]}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Position = {mat[3][0], mat[3][2]}&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scale&lt;/code&gt; : The scaling part of the matrix is baked into the vectors. To determine a rotatio or orientation, each vector has to be normalized, then it can be scale by the expected values. Ex: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Scale(3,2,1) -&amp;gt; Right(3,0,0), Up(0,2,0), Forward(0,0,1)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mat[3][0] -&amp;gt; mat[3][3]&lt;/code&gt; : These values are usually not used for the concept of space transformations in gamedev. Just know that in 90% of your cases it will be &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;(0,0,0,1)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;why-matrices&quot;&gt;Why Matrices?&lt;/h2&gt;
+
+&lt;p&gt;Because we can multiply matrices by a vector and obtain another vector. Basically, we are transforming a vector into the space defined by the matrix!&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Matrix4x4&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector4&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// (x,y,z,w)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Vector4&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;/*
+    mat * v
+    {
+        result.x = mat[0,0]*v.x + mat[0][1]*v.y + mat[0][2]*v.z + mat[0][3]*v.w;
+        result.y = mat[1,0]*v.x + mat[1][1]*v.y + mat[1][2]*v.z + mat[1][3]*v.w;
+        result.z = mat[2,0]*v.x + mat[2][1]*v.y + mat[2][2]*v.z + mat[2][3]*v.w;
+        result.w = mat[3,0]*v.x + mat[3][1]*v.y + mat[3][2]*v.z + mat[3][3]*v.w; 
+    }
+*/&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The newly added 4th coordinate to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vector4&lt;/code&gt; serves right now to determine if we want to use the position in order to transform the vector. If &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;w = 0&lt;/code&gt; the last operation will not take the position in the matrix into account (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mat[0-2][2]&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;When we are transform from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Local&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;World&lt;/code&gt; we apply the multiplication directly, but when we do the inverse we apply the inverse matrix to it!&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;most enignes and libraries will provide a way to invert a matrix or have it cached every time is changed...&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;a-small-tangent&quot;&gt;A small “Tangent”&lt;/h2&gt;
+
+&lt;p&gt;Sometimes we just want to represent a rotation, which does not require the full &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Matrix4x4&lt;/code&gt; and a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Vector4&lt;/code&gt;. For that we can define a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Matrix3x3&lt;/code&gt; which contains such direction vectors:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Normal&lt;/code&gt; : Vector that goes up from a surface&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tangent&lt;/code&gt; : Vector that is parallel to the surface or point and perpendicular to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Normal&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BiTangent&lt;/code&gt; : Vector that is perpendicular to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tangent&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Normal&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;cross-product-crossab--a-x-b--vector&quot;&gt;Cross Product &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cross(a,b) = A x B = Vector&lt;/code&gt;&lt;/h1&gt;
+
+&lt;p&gt;Another way of multiplying vectors, yey! Given 2 vectors that are not equal, we can calculate a perpendicular one!&lt;/p&gt;
+
+&lt;h2 id=&quot;the-rightleft-hand-rule&quot;&gt;The Right/Left Hand rule&lt;/h2&gt;
+
+&lt;p&gt;In Physics/Math there is the concept of the Left/Right hand rule to determine how some forces interact in different axis. For game you will have to adapt to whatever rule the creator decided on, as each component can very well be flipped in either their positive or negative poles or even flipping hand and axis naming.&lt;/p&gt;
+
+&lt;p&gt;&lt;img style=&quot;float: right&quot; src=&quot;/assets/posts_images/03-MathGameDev02/HandRuleComparisons.jpg&quot; width=&quot;60%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts_images/03-MathGameDev02/LeftHandRule.png&quot; width=&quot;31%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If we input the vectors in the order that the rule is set int he tool, the result of the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cross Product&lt;/code&gt; will be perpendicular positive to the other two.&lt;/p&gt;
+
+&lt;h2 id=&quot;calculating-the-cross-product&quot;&gt;Calculating the Cross Product&lt;/h2&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cross&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Second Definition of Cross Product = |a x b| = |a| * |b| * sin(angle_ab)&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;AngleBetween&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Vector3&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cross&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cross&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sin_angle_ab&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cross&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arc_sin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sin_angle_ab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;afterwords&quot;&gt;Afterwords&lt;/h1&gt;
+
+&lt;p&gt;This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.&lt;/p&gt;
+
+&lt;p&gt;For any other person that does think this theme is useful to them, check &lt;a href=&quot;https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA&quot;&gt;Freya Holmer’s Youtube Channel&lt;/a&gt;, as most of her content is already uploaded there!&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="math" /><category term="game development" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Math for GameDev - Part 1: Vectors &amp;amp; Dot product</title><link href="/math/2021/08/06/MathForGameDev-1.html" rel="alternate" type="text/html" title="Math for GameDev - Part 1: Vectors &amp;amp; Dot product" /><published>2021-08-06T00:00:00+02:00</published><updated>2021-08-06T00:00:00+02:00</updated><id>/math/2021/08/06/MathForGameDev-1</id><content type="html" xml:base="/math/2021/08/06/MathForGameDev-1.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
 
 &lt;h1 id=&quot;vectors-basics---1d&quot;&gt;Vectors Basics - 1D&lt;/h1&gt;
 
@@ -32,6 +154,8 @@
 &lt;p&gt;Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.&lt;/p&gt;
 
 &lt;p&gt;Vectors really define a point in space from a defined &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0o&lt;/code&gt; (Origin point).&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;2d-vectors---vector2dx-y&quot;&gt;2D Vectors - &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vector2D(x, y)&lt;/code&gt;&lt;/h1&gt;
 
@@ -104,7 +228,9 @@
 &lt;span class=&quot;n&quot;&gt;vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_final&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;u_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;o&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h1 id=&quot;dot-product-dotv1-v2--v1-x-v2&quot;&gt;Dot Product &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dot(v1, v2) = v1 x v2&lt;/code&gt;&lt;/h1&gt;
+&lt;hr /&gt;
+
+&lt;h1 id=&quot;dot-product-dotv1-v2--v1--v2--scalar_value&quot;&gt;Dot Product &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dot(v1, v2) = v1 * v2 = scalar_value&lt;/code&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;img style=&quot;float: right&quot; src=&quot;/assets/posts_images/02-MathGameDev01/DotProduct.png&quot; width=&quot;30%&quot; /&gt;&lt;/p&gt;
 
@@ -128,6 +254,8 @@
 
 &lt;p&gt;Further down the line we can obtain the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;angle&lt;/code&gt; between these two vectors in order to get detail information on direction, but taht will come in another post!&lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;exercise-1-radial-trigger&quot;&gt;Exercise 1: Radial Trigger&lt;/h1&gt;
 
 &lt;p&gt;Detect wether a point is inside or outside a circle&lt;/p&gt;
@@ -144,6 +272,8 @@
 &lt;p align=&quot;center&quot;&gt;
 &lt;img src=&quot;/assets/posts_images/02-MathGameDev01/RadialTrigger.png&quot; width=&quot;70%&quot; /&gt;
 &lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;exercise-2-look-at-trigger&quot;&gt;Exercise 2: Look at Trigger&lt;/h1&gt;
 
@@ -165,6 +295,8 @@
 &lt;p align=&quot;center&quot;&gt;
 &lt;img src=&quot;/assets/posts_images/02-MathGameDev01/LookAtTrigger.png&quot; width=&quot;70%&quot; /&gt;
 &lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;exercise-3-transform-space-of-a-point&quot;&gt;Exercise 3: Transform Space of a Point&lt;/h1&gt;
 
@@ -195,13 +327,15 @@
 &lt;img src=&quot;/assets/posts_images/02-MathGameDev01/TransformSpace.png&quot; width=&quot;70%&quot; /&gt;
 &lt;/p&gt;
 
+&lt;hr /&gt;
+
 &lt;h1 id=&quot;afterwords&quot;&gt;Afterwords&lt;/h1&gt;
 
 &lt;p&gt;This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.&lt;/p&gt;
 
 &lt;p&gt;For any other person that does think this theme is useful to them, check &lt;a href=&quot;https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA&quot;&gt;Freya Holmer’s Youtube Channel&lt;/a&gt;, as most of her content is already uploaded there!&lt;/p&gt;
 
-&lt;p&gt;If you want to play with the solutions to the assignments, they can be found on the &lt;a href=&quot;https://github.com/MarcFly/marcfly.github.io/releases&quot;&gt;release page of the website’s repository&lt;/a&gt;.&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="Games" /><category term="math" /><category term="game development" /><category term="trigonometry" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
+&lt;p&gt;If you want to play with the solutions to the assignments, they can be found on the &lt;a href=&quot;https://github.com/MarcFly/marcfly.github.io/releases&quot;&gt;release page of the website’s repository&lt;/a&gt;.&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="math" /><category term="game development" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-21T00:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
 
 &lt;p&gt;For this you will need any text editor and just knowing that the terminal exist, where you write words and things go boom or vroom.&lt;/p&gt;
 

@@ -31,7 +31,7 @@
 <meta name="twitter:site" content="@MarcTorres_Dev" />
 <meta name="twitter:creator" content="@MarcTorres_Dev" />
 <script type="application/ld+json">
-{"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","headline":"Math for GameDev - Part 1: Vectors &amp; Dot product","dateModified":"2021-08-06T14:00:00+02:00","datePublished":"2021-08-06T00:00:00+02:00","description":"Notes of Freya Holmer’s “Math for GameDev” series.","mainEntityOfPage":{"@type":"WebPage","@id":"/math/games/2021/08/06/MathForGameDev-1.html"},"url":"/math/games/2021/08/06/MathForGameDev-1.html","@context":"https://schema.org"}</script>
+{"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","headline":"Math for GameDev - Part 1: Vectors &amp; Dot product","dateModified":"2021-08-06T00:00:00+02:00","datePublished":"2021-08-06T00:00:00+02:00","description":"Notes of Freya Holmer’s “Math for GameDev” series.","mainEntityOfPage":{"@type":"WebPage","@id":"/math/2021/08/06/MathForGameDev-1.html"},"url":"/math/2021/08/06/MathForGameDev-1.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -92,12 +92,12 @@
 
     
     <ul class="page-taxonomies">
-      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#games" title="Pages filed under Games">Games</a></li><li class="page-taxonomy"><a class="p-category" href="/categories/#math" title="Pages filed under Math">Math</a></li>
+      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#math" title="Pages filed under Math">Math</a></li>
     </ul>
 
     
     <ul class="page-taxonomies">
-      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#game-development" title="Pages tagged game development" rel="tag">game development</a></li><li class="page-taxonomy"><a href="/tags/#introduction" title="Pages tagged introduction" rel="tag">introduction</a></li><li class="page-taxonomy"><a href="/tags/#math" title="Pages tagged math" rel="tag">math</a></li><li class="page-taxonomy"><a href="/tags/#trigonometry" title="Pages tagged trigonometry" rel="tag">trigonometry</a></li>
+      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#game-development" title="Pages tagged game development" rel="tag">game development</a></li><li class="page-taxonomy"><a href="/tags/#introduction" title="Pages tagged introduction" rel="tag">introduction</a></li><li class="page-taxonomy"><a href="/tags/#math" title="Pages tagged math" rel="tag">math</a></li>
     </ul>
 
     <hr>
@@ -135,6 +135,8 @@
 <p>Adding new dimentions in an orthographic space, each new axis will be perpendicular ot the previous ones.</p>
 
 <p>Vectors really define a point in space from a defined <code class="language-plaintext highlighter-rouge">0o</code> (Origin point).</p>
+
+<hr />
 
 <h1 id="2d-vectors---vector2dx-y">2D Vectors - <code class="language-plaintext highlighter-rouge">vector2D(x, y)</code></h1>
 
@@ -207,7 +209,9 @@
 <span class="n">vector2D</span> <span class="n">u_final</span> <span class="o">=</span> <span class="n">u_point</span> <span class="o">+</span> <span class="n">o</span>
 </code></pre></div></div>
 
-<h1 id="dot-product-dotv1-v2--v1-x-v2">Dot Product <code class="language-plaintext highlighter-rouge">dot(v1, v2) = v1 x v2</code></h1>
+<hr />
+
+<h1 id="dot-product-dotv1-v2--v1--v2--scalar_value">Dot Product <code class="language-plaintext highlighter-rouge">dot(v1, v2) = v1 * v2 = scalar_value</code></h1>
 
 <p><img style="float: right" src="/assets/posts_images/02-MathGameDev01/DotProduct.png" width="30%" /></p>
 
@@ -231,6 +235,8 @@
 
 <p>Further down the line we can obtain the <code class="language-plaintext highlighter-rouge">angle</code> between these two vectors in order to get detail information on direction, but taht will come in another post!</p>
 
+<hr />
+
 <h1 id="exercise-1-radial-trigger">Exercise 1: Radial Trigger</h1>
 
 <p>Detect wether a point is inside or outside a circle</p>
@@ -247,6 +253,8 @@
 <p align="center">
 <img src="/assets/posts_images/02-MathGameDev01/RadialTrigger.png" width="70%" />
 </p>
+
+<hr />
 
 <h1 id="exercise-2-look-at-trigger">Exercise 2: Look at Trigger</h1>
 
@@ -268,6 +276,8 @@
 <p align="center">
 <img src="/assets/posts_images/02-MathGameDev01/LookAtTrigger.png" width="70%" />
 </p>
+
+<hr />
 
 <h1 id="exercise-3-transform-space-of-a-point">Exercise 3: Transform Space of a Point</h1>
 
@@ -298,6 +308,8 @@
 <img src="/assets/posts_images/02-MathGameDev01/TransformSpace.png" width="70%" />
 </p>
 
+<hr />
+
 <h1 id="afterwords">Afterwords</h1>
 
 <p>This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.</p>
@@ -312,9 +324,9 @@
     <div align="center">
     
       <div class="page-share">
-  <a href="https://twitter.com/intent/tweet?text=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product%20%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
-  <a href="https://reddit.com/submit?title=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product&url=%2Fmath%2Fgames%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product%20%2Fmath%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmath%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Math+for+GameDev+-+Part+1%3A+Vectors+%26+Dot+product&url=%2Fmath%2F2021%2F08%2F06%2FMathForGameDev-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
 </div>
 
     
@@ -333,6 +345,14 @@
     </a>
   
 
+  
+    <a class="page-next" href="/math/2021/08/10/MathForGamedev-2.html">
+      <h4 class="page-pagination-label">Next</h4>
+      <span class="page-pagination-title">
+        Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product
+ <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
   
 </nav>
 
