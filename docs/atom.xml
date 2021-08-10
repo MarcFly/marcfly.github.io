@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-07T15:22:26+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Math for GameDev - Part 1: Vectors &amp;amp; Dot product</title><link href="/math/games/2021/08/06/MathForGameDev-1.html" rel="alternate" type="text/html" title="Math for GameDev - Part 1: Vectors &amp;amp; Dot product" /><published>2021-08-06T00:00:00+02:00</published><updated>2021-08-06T14:00:00+02:00</updated><id>/math/games/2021/08/06/MathForGameDev-1</id><content type="html" xml:base="/math/games/2021/08/06/MathForGameDev-1.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/atom.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-08-10T13:14:46+02:00</updated><id>/atom.xml</id><title type="html">Marc Torres’ Devlog</title><author><name>Marc Torres Jimenez</name></author><entry><title type="html">Math for GameDev - Part 1: Vectors &amp;amp; Dot product</title><link href="/math/games/2021/08/06/MathForGameDev-1.html" rel="alternate" type="text/html" title="Math for GameDev - Part 1: Vectors &amp;amp; Dot product" /><published>2021-08-06T00:00:00+02:00</published><updated>2021-08-06T14:00:00+02:00</updated><id>/math/games/2021/08/06/MathForGameDev-1</id><content type="html" xml:base="/math/games/2021/08/06/MathForGameDev-1.html">&lt;p&gt;&lt;a href=&quot;https://twitter.com/FreyaHolmer&quot;&gt;Freya Holmer&lt;/a&gt; published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.&lt;/p&gt;
 
 &lt;h1 id=&quot;vectors-basics---1d&quot;&gt;Vectors Basics - 1D&lt;/h1&gt;
 
@@ -128,11 +128,80 @@
 
 &lt;p&gt;Further down the line we can obtain the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;angle&lt;/code&gt; between these two vectors in order to get detail information on direction, but taht will come in another post!&lt;/p&gt;
 
+&lt;h1 id=&quot;exercise-1-radial-trigger&quot;&gt;Exercise 1: Radial Trigger&lt;/h1&gt;
+
+&lt;p&gt;Detect wether a point is inside or outside a circle&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;circle_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mouse_game_space&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mouse_pos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;circle_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;we are in!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/RadialTrigger.png&quot; width=&quot;70%&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&quot;exercise-2-look-at-trigger&quot;&gt;Exercise 2: Look at Trigger&lt;/h1&gt;
+
+&lt;p&gt;Given a direction and mouse position, know if the direction is looking towards the mouse based on a threshold. Threshold goes form 0 to 1, 1 is super strict (exact direction) and 0 it means perpendicular or closer is looking at mouse.&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mouse_game_space&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;threshold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player_mouse_v&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mouse_game_space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;player_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;float&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dot_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;player_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;normalize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;player_mouse_v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dot_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;abs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;threshold&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dot_value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;we are looking to trigger!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/LookAtTrigger.png&quot; width=&quot;70%&quot; /&gt;
+&lt;/p&gt;
+
+&lt;h1 id=&quot;exercise-3-transform-space-of-a-point&quot;&gt;Exercise 3: Transform Space of a Point&lt;/h1&gt;
+
+&lt;p&gt;Given an arbitrary origin (0,0), an object with a certain position and direction, and a point that is expressed with the object as origin; express the point in origin coordinates (including rotation and translation).&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_up&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Obejct values are expressed in world space&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_world_space&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 1 - From world to local space&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Translate to Object Space&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_obj_sp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_world_space&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Move along axis of object&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;point_local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;point_obj_sp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;point_local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;point_obj_sp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_up&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// 2 - From local to world space&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Get from object_space to point space using object axis&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_x_axis_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_right&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_y_axis_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_up&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;point_local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// These 2 vectors, represent the 2 translations in world space from the worldspace position of the object, to the world position of the point&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_x_axis_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_y_axis_point&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Then to put into full world space, we translate back as if it was from origin&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Vector2D&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;world_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local_point&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object_pos&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p align=&quot;center&quot;&gt;
+&lt;img src=&quot;/assets/posts_images/02-MathGameDev01/TransformSpace.png&quot; width=&quot;70%&quot; /&gt;
+&lt;/p&gt;
+
 &lt;h1 id=&quot;afterwords&quot;&gt;Afterwords&lt;/h1&gt;
 
 &lt;p&gt;This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.&lt;/p&gt;
 
-&lt;p&gt;For any other person that does think this theme is useful to them, check &lt;a href=&quot;https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA&quot;&gt;Freya Holmer’s Youtube Channel&lt;/a&gt;, as most of her content is already uploaded there!&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="Games" /><category term="math" /><category term="game development" /><category term="trigonometry" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
+&lt;p&gt;For any other person that does think this theme is useful to them, check &lt;a href=&quot;https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA&quot;&gt;Freya Holmer’s Youtube Channel&lt;/a&gt;, as most of her content is already uploaded there!&lt;/p&gt;
+
+&lt;p&gt;If you want to play with the solutions to the assignments, they can be found on the &lt;a href=&quot;https://github.com/MarcFly/marcfly.github.io/releases&quot;&gt;release page of the website’s repository&lt;/a&gt;.&lt;/p&gt;</content><author><name>Marc Torres Jimenez</name></author><category term="Math" /><category term="Games" /><category term="math" /><category term="game development" /><category term="trigonometry" /><category term="introduction" /><summary type="html">Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</summary></entry><entry><title type="html">Getting this blog setup</title><link href="/web/2021/07/21/Setup.html" rel="alternate" type="text/html" title="Getting this blog setup" /><published>2021-07-21T00:00:00+02:00</published><updated>2021-07-22T14:00:00+02:00</updated><id>/web/2021/07/21/Setup</id><content type="html" xml:base="/web/2021/07/21/Setup.html">&lt;p&gt;This post will be an overview on getting a simple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Jekyll&lt;/code&gt; based blog working.&lt;/p&gt;
 
 &lt;p&gt;For this you will need any text editor and just knowing that the terminal exist, where you write words and things go boom or vroom.&lt;/p&gt;
 
@@ -197,7 +266,7 @@ jekyll new &amp;lt;blogname&amp;gt; &lt;span class=&quot;c&quot;&gt;#--blank #Op
 &lt;p&gt;Then you can preview it by executing and going to &lt;strong&gt;&lt;a href=&quot;localhost:4000&quot;&gt;localhost:4000&lt;/a&gt;&lt;/strong&gt; on you browser&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll serve
-&lt;span class=&quot;c&quot;&gt;# If you don't have a theme, ignore &amp;lt;bundle exec&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# If you don&apos;t have a theme, ignore &amp;lt;bundle exec&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;With that you are already done, you can start writing posts and whatever you want!&lt;/p&gt;
@@ -220,7 +289,7 @@ jekyll new &amp;lt;blogname&amp;gt; &lt;span class=&quot;c&quot;&gt;#--blank #Op
 
 &lt;span class=&quot;gh&quot;&gt;# Content Starts Here!&lt;/span&gt;
 
-lorem ipsum whatever i don't remeber more than the start...
+lorem ipsum whatever i don&apos;t remeber more than the start...
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Each file will have a header in which the parsing information will be setup. Depending on the theme there will be different layout options and exclusive options to be filled. For example in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SO Simple&lt;/code&gt; theme, there are categories and tags that can be written to then have an easier way to seach and filter posts.&lt;/p&gt;

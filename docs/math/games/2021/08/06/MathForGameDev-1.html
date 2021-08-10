@@ -31,7 +31,7 @@
 <meta name="twitter:site" content="@MarcTorres_Dev" />
 <meta name="twitter:creator" content="@MarcTorres_Dev" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","headline":"Math for GameDev - Part 1: Vectors &amp; Dot product","url":"/math/games/2021/08/06/MathForGameDev-1.html","datePublished":"2021-08-06T00:00:00+02:00","dateModified":"2021-08-06T14:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/math/games/2021/08/06/MathForGameDev-1.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"description":"Notes of Freya Holmer’s “Math for GameDev” series.","@context":"https://schema.org"}</script>
+{"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","headline":"Math for GameDev - Part 1: Vectors &amp; Dot product","dateModified":"2021-08-06T14:00:00+02:00","datePublished":"2021-08-06T00:00:00+02:00","description":"Notes of Freya Holmer’s “Math for GameDev” series.","mainEntityOfPage":{"@type":"WebPage","@id":"/math/games/2021/08/06/MathForGameDev-1.html"},"url":"/math/games/2021/08/06/MathForGameDev-1.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -231,11 +231,80 @@
 
 <p>Further down the line we can obtain the <code class="language-plaintext highlighter-rouge">angle</code> between these two vectors in order to get detail information on direction, but taht will come in another post!</p>
 
+<h1 id="exercise-1-radial-trigger">Exercise 1: Radial Trigger</h1>
+
+<p>Detect wether a point is inside or outside a circle</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector2D</span> <span class="n">circle_pos</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">r</span><span class="p">;</span>
+<span class="n">Vector2D</span> <span class="n">mouse_game_space</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">mouse_pos</span> <span class="o">-</span> <span class="n">circle_pos</span><span class="p">);</span>
+<span class="k">if</span><span class="p">(</span><span class="n">dist</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">(</span><span class="s">"we are in!"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/RadialTrigger.png" width="70%" />
+</p>
+
+<h1 id="exercise-2-look-at-trigger">Exercise 2: Look at Trigger</h1>
+
+<p>Given a direction and mouse position, know if the direction is looking towards the mouse based on a threshold. Threshold goes form 0 to 1, 1 is super strict (exact direction) and 0 it means perpendicular or closer is looking at mouse.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector2D</span> <span class="n">player_pos</span><span class="p">;</span>
+<span class="n">Vector2D</span> <span class="n">player_dir</span><span class="p">;</span>
+<span class="n">Vector2D</span> <span class="n">mouse_game_space</span><span class="p">;</span>
+
+<span class="kt">float</span> <span class="n">threshold</span><span class="p">;</span>
+
+<span class="n">Vector2D</span> <span class="n">player_mouse_v</span> <span class="o">=</span> <span class="n">mouse_game_space</span> <span class="o">-</span> <span class="n">player_pos</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">dot_value</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span> <span class="n">normalize</span><span class="p">(</span><span class="n">player_dir</span><span class="p">),</span> <span class="n">normalize</span><span class="p">(</span><span class="n">player_mouse_v</span><span class="p">)</span> <span class="p">);</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">dot_value</span> <span class="o">&gt;</span> <span class="n">abs</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">dot_value</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">log</span><span class="p">(</span><span class="s">"we are looking to trigger!"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/LookAtTrigger.png" width="70%" />
+</p>
+
+<h1 id="exercise-3-transform-space-of-a-point">Exercise 3: Transform Space of a Point</h1>
+
+<p>Given an arbitrary origin (0,0), an object with a certain position and direction, and a point that is expressed with the object as origin; express the point in origin coordinates (including rotation and translation).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector2D</span> <span class="n">object_pos</span><span class="p">,</span> <span class="n">object_up</span><span class="p">,</span> <span class="n">object_right</span><span class="p">;</span> <span class="c1">// Obejct values are expressed in world space</span>
+<span class="n">Vector2D</span> <span class="n">point_world_space</span><span class="p">;</span>
+
+<span class="c1">// 1 - From world to local space</span>
+<span class="c1">// Translate to Object Space</span>
+<span class="n">Vector2D</span> <span class="n">point_obj_sp</span> <span class="o">=</span> <span class="n">point_world_space</span> <span class="o">+</span> <span class="n">object_pos</span><span class="p">;</span>
+<span class="c1">// Move along axis of object</span>
+<span class="n">Vector2D</span> <span class="n">point_local</span><span class="p">;</span>
+<span class="n">point_local</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">point_obj_sp</span><span class="p">,</span> <span class="n">object_right</span><span class="p">);</span>
+<span class="n">point_local</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">point_obj_sp</span><span class="p">,</span> <span class="n">object_up</span><span class="p">);</span>
+
+<span class="c1">// 2 - From local to world space</span>
+<span class="c1">// Get from object_space to point space using object axis</span>
+<span class="n">Vector2D</span> <span class="n">object_x_axis_point</span> <span class="o">=</span> <span class="n">object_right</span> <span class="o">*</span> <span class="n">point_local</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="n">Vector2D</span> <span class="n">object_y_axis_point</span> <span class="o">=</span> <span class="n">object_up</span> <span class="o">*</span> <span class="n">point_local</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="c1">// These 2 vectors, represent the 2 translations in world space from the worldspace position of the object, to the world position of the point</span>
+<span class="n">Vector2D</span> <span class="n">local_point</span> <span class="o">=</span> <span class="n">object_x_axis_point</span> <span class="o">+</span> <span class="n">object_y_axis_point</span><span class="p">;</span>
+<span class="c1">// Then to put into full world space, we translate back as if it was from origin</span>
+<span class="n">Vector2D</span> <span class="n">world_point</span> <span class="o">=</span> <span class="n">local_point</span> <span class="o">+</span> <span class="n">object_pos</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/TransformSpace.png" width="70%" />
+</p>
+
 <h1 id="afterwords">Afterwords</h1>
 
 <p>This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.</p>
 
 <p>For any other person that does think this theme is useful to them, check <a href="https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA">Freya Holmer’s Youtube Channel</a>, as most of her content is already uploaded there!</p>
+
+<p>If you want to play with the solutions to the assignments, they can be found on the <a href="https://github.com/MarcFly/marcfly.github.io/releases">release page of the website’s repository</a>.</p>
 
 
     <hr>

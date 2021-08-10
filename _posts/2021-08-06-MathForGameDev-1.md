@@ -148,6 +148,10 @@ if(dist <= r)
     log("we are in!");
 ~~~
 
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/RadialTrigger.png" width="70%"/>
+</p>
+
 # Exercise 2: Look at Trigger
 
 Given a direction and mouse position, know if the direction is looking towards the mouse based on a threshold. Threshold goes form 0 to 1, 1 is super strict (exact direction) and 0 it means perpendicular or closer is looking at mouse.
@@ -165,6 +169,11 @@ float dot_value = dot( normalize(player_dir), normalize(player_mouse_v) );
 if(dot_value > abs(threshold) && dot_value > 0)
     log("we are looking to trigger!");
 ~~~
+
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/LookAtTrigger.png" width="70%"/>
+</p>
+
 
 # Exercise 3: Transform Space of a Point
 
@@ -192,8 +201,14 @@ Vector2D local_point = object_x_axis_point + object_y_axis_point;
 Vector2D world_point = local_point + object_pos;
 ~~~
 
+<p align="center">
+<img src="/assets/posts_images/02-MathGameDev01/TransformSpace.png" width="70%"/>
+</p>
+
 # Afterwords
 
 This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.
 
 For any other person that does think this theme is useful to them, check [Freya Holmer's Youtube Channel](https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA), as most of her content is already uploaded there!
+
+If you want to play with the solutions to the assignments, they can be found on the [release page of the website's repository](https://github.com/MarcFly/marcfly.github.io/releases). 
