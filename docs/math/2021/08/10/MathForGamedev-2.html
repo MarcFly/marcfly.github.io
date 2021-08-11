@@ -31,7 +31,7 @@
 <meta name="twitter:site" content="@MarcTorres_Dev" />
 <meta name="twitter:creator" content="@MarcTorres_Dev" />
 <script type="application/ld+json">
-{"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"author":{"@type":"Person","name":"Marc Torres Jimenez"},"@type":"BlogPosting","headline":"Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product","dateModified":"2021-08-10T00:00:00+02:00","datePublished":"2021-08-10T00:00:00+02:00","description":"Notes of Freya Holmer’s “Math for GameDev” series.","mainEntityOfPage":{"@type":"WebPage","@id":"/math/2021/08/10/MathForGamedev-2.html"},"url":"/math/2021/08/10/MathForGamedev-2.html","@context":"https://schema.org"}</script>
+{"author":{"@type":"Person","name":"Marc Torres Jimenez"},"headline":"Math for GameDev - Part 2: Spaces, Matrices &amp; Cross Product","dateModified":"2021-08-10T00:00:00+02:00","@type":"BlogPosting","datePublished":"2021-08-10T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/math/2021/08/10/MathForGamedev-2.html"},"description":"Notes of Freya Holmer’s “Math for GameDev” series.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/math/2021/08/10/MathForGamedev-2.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -216,6 +216,109 @@
     <span class="k">return</span> <span class="n">arc_sin</span><span class="p">(</span><span class="n">sin_angle_ab</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<hr />
+
+<h1 id="exercise-4---reflecting-ray">Exercise 4 - Reflecting Ray</h1>
+
+<p>Given a point and a direction, get the ray that would reflect from hitting a surface.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Assuming we have a function to cast rays and get returned a raycast hit</span>
+<span class="c1">// A raycast hit would return a position and the orientation of the geometry at the hit point (Normal!)</span>
+
+<span class="c1">// Dot gives you de project of direction over normal</span>
+<span class="c1">// So we can create a vector that is the normal, adjusted to the vector sent!</span>
+<span class="c1">// If we were to subtract this adjusted_normal to direction, we would get a vector that</span>
+<span class="c1">// goes forward perpendicular to the normal, as it is adjusted to the projection</span>
+<span class="c1">// If instead we subtract the adjusted_normal but double in size, it will mirror the vector!</span>
+
+<span class="n">Vector3</span> <span class="n">position</span><span class="p">,</span> <span class="n">direction</span><span class="p">;</span>
+<span class="n">RaycastHit</span> <span class="n">hit</span> <span class="o">=</span> <span class="n">RayCast</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">direction</span><span class="p">);</span>
+<span class="n">Vector3</span> <span class="n">adjusted_normal</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">dot</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">hit</span><span class="p">.</span><span class="n">normal</span><span class="p">)</span><span class="o">*</span><span class="n">hit</span><span class="p">.</span><span class="n">normal</span><span class="p">;</span>
+<span class="n">Vector3</span> <span class="n">mirror_normal</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">adjusted_normal</span><span class="p">;</span>
+<span class="n">Vector3</span> <span class="n">reflected</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">direction</span> <span class="o">-</span> <span class="n">mirror_normal</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex4-Reflected.png" width="70%" />
+</p>
+
+<hr />
+
+<h1 id="exercise-5---surface-area-of-a-mesh">Exercise 5 - Surface area of a mesh</h1>
+
+<p>Given a mesh that is made of triangle primitives <code class="language-plaintext highlighter-rouge">area = (w * h)/2 = (length(v2 - v1) * length(v3 - v1))/2</code>, calculate its area and volume.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// The volume calculations are incorrect, I can't properly understand it</span>
+<span class="c1">// Tried following this: http://zobayer.blogspot.com/2009/11/volume-of-irregular-tetrahedron.html</span>
+
+<span class="n">Vector3</span> <span class="n">mesh_center</span><span class="p">;</span> <span class="c1">// assume the mesh has a center that all points are around it</span>
+<span class="c1">// Else it should be required to have multiple centers and areas to divide the calculations...</span>
+<span class="kt">float</span> <span class="n">area</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">volume</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">Vector3</span> <span class="n">verts</span><span class="p">[];</span>
+<span class="kt">int</span> <span class="n">indices</span><span class="p">[];</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">indices</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">+=</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Area</span>
+    <span class="n">Vector3</span> <span class="n">a</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+    <span class="n">Vector3</span> <span class="n">b</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]];</span>
+    <span class="n">Vector3</span> <span class="n">c</span> <span class="o">=</span> <span class="n">verts</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]];</span>
+    <span class="n">area</span> <span class="o">+=</span> <span class="n">length</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">-</span><span class="n">a</span><span class="p">)</span> <span class="o">/</span><span class="mf">2.</span><span class="n">f</span><span class="p">;</span>
+
+    <span class="c1">// Volume</span>
+    <span class="kt">float</span> <span class="n">U</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">V</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">b</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">W</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">c</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">u</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">c</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">v</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">a</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">w</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">b</span><span class="p">);</span>
+    <span class="n">volume</span> <span class="o">+=</span> <span class="n">TriMeshVolume</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">W</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Volume Functions - Not translated to pseudocode from Unity</span>
+
+<span class="k">private</span> <span class="kt">float</span> <span class="nf">TriVolumePair</span><span class="p">(</span><span class="kt">float</span> <span class="n">a</span><span class="p">,</span> <span class="kt">float</span> <span class="n">b</span><span class="p">,</span> <span class="kt">float</span> <span class="n">c</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="kt">float</span> <span class="nf">TriVolumCalc</span><span class="p">(</span><span class="kt">float</span> <span class="n">u</span><span class="p">,</span> <span class="kt">float</span> <span class="n">v</span><span class="p">,</span> <span class="kt">float</span> <span class="n">w</span><span class="p">,</span> <span class="kt">float</span> <span class="n">u2</span><span class="p">,</span> <span class="kt">float</span> <span class="n">v2</span><span class="p">,</span> <span class="kt">float</span> <span class="n">w2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sqrt</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Pow</span><span class="p">(</span><span class="n">w2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">u2</span><span class="o">*</span><span class="n">v2</span><span class="o">*</span><span class="n">w2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="kt">float</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">w2</span><span class="p">;</span>
+<span class="k">private</span> <span class="kt">float</span> <span class="nf">TriMeshVolume</span><span class="p">(</span><span class="kt">float</span> <span class="n">u</span><span class="p">,</span> <span class="kt">float</span> <span class="n">v</span><span class="p">,</span> <span class="kt">float</span> <span class="n">w</span><span class="p">,</span> <span class="kt">float</span> <span class="n">U</span><span class="p">,</span> <span class="kt">float</span> <span class="n">V</span><span class="p">,</span> <span class="kt">float</span> <span class="n">W</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">TriVolumePair</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">U</span><span class="p">);</span>
+    <span class="n">v2</span> <span class="o">=</span> <span class="n">TriVolumePair</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">V</span><span class="p">);</span>
+    <span class="n">w2</span> <span class="o">=</span> <span class="n">TriVolumePair</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">W</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">TriVolumCalc</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">w</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v2</span><span class="p">,</span> <span class="n">w2</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex5-AreaVolume.png" width="70%" />
+</p>
+
+<hr />
+
+<h1 id="exercise-6---turret-placement---normaltangentbitangent">Exercise 6 - Turret Placement - Normal,Tangent,Bitangent</h1>
+
+<p>When we want to place something in our world, we need to know where that object will be facing. Given a position and a direction, obtain the direction which the object should be placed on top of a terrain, which is the Normal vector, the direction it is looking (Tangent) and the Bitangent.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Vector3</span> <span class="n">position</span><span class="p">,</span> <span class="n">direction</span><span class="p">;</span>
+
+<span class="n">RaycastHit</span> <span class="n">hit</span> <span class="o">=</span> <span class="n">RayCast</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">direction</span><span class="p">);</span>
+<span class="n">Vector3</span> <span class="n">tangent</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">hit</span><span class="p">.</span><span class="n">normal</span><span class="p">));</span>
+<span class="n">Vector3</span> <span class="n">bitangent</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">tangent</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex6-Turret.png" width="70%" />
+</p>
 
 <hr />
 

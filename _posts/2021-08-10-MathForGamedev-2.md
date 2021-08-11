@@ -121,6 +121,113 @@ float AngleBetween(Vector3 a, Vector3 b)
 }
 ~~~
 
+
+---
+
+# Exercise 4 - Reflecting Ray
+
+Given a point and a direction, get the ray that would reflect from hitting a surface.
+
+~~~c++
+// Assuming we have a function to cast rays and get returned a raycast hit
+// A raycast hit would return a position and the orientation of the geometry at the hit point (Normal!)
+
+// Dot gives you de project of direction over normal
+// So we can create a vector that is the normal, adjusted to the vector sent!
+// If we were to subtract this adjusted_normal to direction, we would get a vector that
+// goes forward perpendicular to the normal, as it is adjusted to the projection
+// If instead we subtract the adjusted_normal but double in size, it will mirror the vector!
+
+Vector3 position, direction;
+RaycastHit hit = RayCast(position, direction);
+Vector3 adjusted_normal = 2*dot(direction, hit.normal)*hit.normal;
+Vector3 mirror_normal = 2*adjusted_normal;
+Vector3 reflected = normalize(direction - mirror_normal);
+~~~
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex4-Reflected.png" width="70%"/>
+</p>
+
+---
+
+# Exercise 5 - Surface area of a mesh
+
+Given a mesh that is made of triangle primitives `area = (w * h)/2 = (length(v2 - v1) * length(v3 - v1))/2`, calculate its area and volume.
+
+~~~c++
+
+// The volume calculations are incorrect, I can't properly understand it
+// Tried following this: http://zobayer.blogspot.com/2009/11/volume-of-irregular-tetrahedron.html
+
+Vector3 mesh_center; // assume the mesh has a center that all points are around it
+// Else it should be required to have multiple centers and areas to divide the calculations...
+float area = 0, volume = 0;
+
+Vector3 verts[];
+int indices[];
+
+for(int i = 0; i < indices.size(); i+=3)
+{
+    // Area
+    Vector3 a = verts[indices[i]];
+    Vector3 b = verts[indices[i+1]];
+    Vector3 c = verts[indices[i+2]];
+    area += length(cross(b-a, c-a) /2.f;
+
+    // Volume
+    float U = length(b-a);
+    float V = length(c-b);
+    float W = length(a-c);
+    float u = length(transform.position - c);
+    float v = length(transform.position - a);
+    float w = length(transform.position - b);
+    volume += TriMeshVolume(u, v, w, U, V, W);
+}
+
+// Volume Functions - Not translated to pseudocode from Unity
+
+private float TriVolumePair(float a, float b, float c)
+{
+    return Mathf.Pow(a,2) + Mathf.Pow(b,2) - Mathf.Pow(c,2);
+}
+
+private float TriVolumCalc(float u, float v, float w, float u2, float v2, float w2)
+{
+    return Mathf.Sqrt(4*Mathf.Pow(u,2)*Mathf.Pow(v,2)*Mathf.Pow(w,2) - Mathf.Pow(u,2)*Mathf.Pow(u2, 2) - Mathf.Pow(v,2)*Mathf.Pow(v2, 2) - Mathf.Pow(w,2)*Mathf.Pow(w2, 2) + u2*v2*w2) / 12;
+}
+
+public float u2, v2, w2;
+private float TriMeshVolume(float u, float v, float w, float U, float V, float W) {
+    u2 = TriVolumePair(v, w, U);
+    v2 = TriVolumePair(w, u, V);
+    w2 = TriVolumePair(u, v, W);
+    return TriVolumCalc(u,v,w, u2, v2, w2);
+}
+~~~
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex5-AreaVolume.png" width="70%"/>
+</p>
+
+---
+
+# Exercise 6 - Turret Placement - Normal,Tangent,Bitangent
+
+When we want to place something in our world, we need to know where that object will be facing. Given a position and a direction, obtain the direction which the object should be placed on top of a terrain, which is the Normal vector, the direction it is looking (Tangent) and the Bitangent.
+
+~~~c++
+Vector3 position, direction;
+
+RaycastHit hit = RayCast(position, direction);
+Vector3 tangent = normalize(cross(direction, hit.normal));
+Vector3 bitangent = normalize(cross(direction, tangent));
+~~~
+
+<p align="center">
+<img src="/assets/posts_images/03-MathGameDev02/Ex6-Turret.png" width="70%"/>
+</p>
+
 ---
 
 # Afterwords
