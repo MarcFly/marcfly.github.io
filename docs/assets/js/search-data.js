@@ -13,4 +13,9 @@ var store = [{
         "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. SPACES - From Part 1....","categories": ["Math"],
         "tags": ["math","game development","introduction"],
         "url": "/math/2021/08/10/MathForGamedev-2.html"
+      },{
+        "title": "Math for GameDev - Part 3: Trigonometry",
+        "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Angles As vectors, they are...","categories": ["Math"],
+        "tags": ["math","game development","introduction"],
+        "url": "/math/2021/08/13/MathForGameDev-3.html"
       },]

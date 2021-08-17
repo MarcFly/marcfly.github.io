@@ -11,6 +11,8 @@ tags:
 
 [Freya Holmer](https://twitter.com/FreyaHolmer) published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.
 
+---
+
 # Vectors Basics - 1D
 
 ![](/assets/posts_images/02-MathGameDev01/Vector1D.png)

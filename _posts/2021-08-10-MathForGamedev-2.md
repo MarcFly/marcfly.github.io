@@ -11,6 +11,8 @@ tags:
 
 [Freya Holmer](https://twitter.com/FreyaHolmer) published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.
 
+---
+
 # SPACES - From Part 1. Ex.3
 
 Most things are relative to others. When we decide that an object has a certain position, that is relative to our `WorldSpace` defined by our main axis `X(1,0,0) , Y(0,1,0) , Z(0,0,1)`. But that space can also be relative to another object, axis or space that we define.
