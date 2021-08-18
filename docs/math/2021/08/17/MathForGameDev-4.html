@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Math for GameDev - Part 4: Interpolation | Marc Torres’ Devlog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Math for GameDev - Part 4: Interpolation" />
+<meta name="author" content="Marc Torres Jimenez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:description" content="Notes of Freya Holmer’s “Math for GameDev” series." />
+<meta property="og:site_name" content="Marc Torres’ Devlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-08-17T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Math for GameDev - Part 4: Interpolation" />
+<meta name="twitter:site" content="@MarcTorres_Dev" />
+<meta name="twitter:creator" content="@MarcTorres_Dev" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Marc Torres Jimenez"},"headline":"Math for GameDev - Part 4: Interpolation","dateModified":"2021-08-17T00:00:00+02:00","@type":"BlogPosting","datePublished":"2021-08-17T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/math/2021/08/17/MathForGameDev-4.html"},"description":"Notes of Freya Holmer’s “Math for GameDev” series.","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/math/2021/08/17/MathForGameDev-4.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Marc Torres&#39; Devlog" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  math-for-gamedev-part-4-interpolation">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/"><i class="fas fa-home fa-2x"></i></a></li><li><a href="/posts/"><i class="fas fa-file-alt fa-2x"></i></a></li><li><a href="/categories/"><i class="fas fa-archive fa-2x"></i></a></li><li><a href="/tags/"><i class="fas fa-tags fa-2x"></i></a></li><li><a href="/about/"><i class="fas fa-user fa-2x"></i></a></li><li><a href="/search/"><i class="fas fa-search fa-2x"></i></a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+
+    <div id="main" class="main-content" aria-label="Content">
+  <div class="page-custom-post">
+
+    <!--
+-->
+    
+    
+      <h1 id="page-title" class="page-title p-name">Math for GameDev - Part 4: Interpolation
+</h1>
+    
+    <hr>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#math" title="Pages filed under Math">Math</a></li>
+    </ul>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#game-development" title="Pages tagged game development" rel="tag">game development</a></li><li class="page-taxonomy"><a href="/tags/#introduction" title="Pages tagged introduction" rel="tag">introduction</a></li><li class="page-taxonomy"><a href="/tags/#math" title="Pages tagged math" rel="tag">math</a></li>
+    </ul>
+
+    <hr>
+    <p><a href="https://twitter.com/FreyaHolmer">Freya Holmer</a> published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone.</p>
+
+<hr />
+
+<h1 id="interpolation">Interpolation</h1>
+
+<p>The meaning of interpolation is that, given a set of input, we obtain a value determined by an interpolation function.</p>
+
+<p><code class="language-plaintext highlighter-rouge">interpolation(input1, input2, factor) = result</code></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">input1 / minvalue</code> : Minimum value returned.</li>
+  <li><code class="language-plaintext highlighter-rouge">input2 / maxvalue</code> : Maximum value returned.</li>
+  <li><code class="language-plaintext highlighter-rouge">factor / fraction / normalized range / ...</code> : Value from 0 to 1 that determines the result between the other two. <code class="language-plaintext highlighter-rouge">0 = minval, 1 = maxval</code></li>
+</ul>
+
+<h2 id="interpolation-functions">Interpolation Functions</h2>
+
+<p>Interpolation functions vary from implementation to others, as well as what inputs are acceptable. A value can be comprised of multiple inputs, such as a 3D vector that has 3 inputs, the result will be of the same type of the input always.</p>
+
+<h3 id="linear-interpolation-lerp">Linear Interpolation (LERP)</h3>
+<p><code class="language-plaintext highlighter-rouge">lerp(min, max, frac) = (max - min) * frac + min = value</code></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">min / max</code> : values that you input to create a range from which to get a value</li>
+  <li><code class="language-plaintext highlighter-rouge">frac</code> : interpolation value with range<code class="language-plaintext highlighter-rouge">{0, 1}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">value</code> : resulting value of same type as <code class="language-plaintext highlighter-rouge">min</code> and <code class="language-plaintext highlighter-rouge">max</code></li>
+</ul>
+
+<h3 id="inverse-lerp">Inverse LERP</h3>
+<p><code class="language-plaintext highlighter-rouge">ilerp(min, max, value) =  (value - min) / (max-min) = frac</code></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">min / max</code> : values that you input to create a range from which to get a value</li>
+  <li><code class="language-plaintext highlighter-rouge">value</code> : value of the same time as <code class="language-plaintext highlighter-rouge">min</code> and <code class="language-plaintext highlighter-rouge">max</code>, from which to obtain an interpolating value between inputs</li>
+  <li><code class="language-plaintext highlighter-rouge">frac</code> : resulting value which is the interpolating factor betwen <code class="language-plaintext highlighter-rouge">min/max</code> to obtain <code class="language-plaintext highlighter-rouge">value</code>, ranging from <code class="language-plaintext highlighter-rouge">{0, 1}</code></li>
+</ul>
+
+<h3 id="remap--rerange">Remap / ReRange</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>remap(inputMin, inputMax, outputMin, outputMax, value) = 
+((outputMax - ouputMin) /(inputMax - inputMin)) * (value - inputMin) + outputMin =
+remapped_value
+</code></pre></div></div>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">inputMin / inputMax</code> : Input values to express a range where <code class="language-plaintext highlighter-rouge">value</code> resides</li>
+  <li><code class="language-plaintext highlighter-rouge">outputMin / outputMax</code> : Wanted range in which we want to express <code class="language-plaintext highlighter-rouge">value</code></li>
+  <li><code class="language-plaintext highlighter-rouge">value</code> : value between <code class="language-plaintext highlighter-rouge">inputMin / inputMax</code> that we want to express in range <code class="language-plaintext highlighter-rouge">{outputMin, outputMax}</code></li>
+  <li><code class="language-plaintext highlighter-rouge">remapped_value</code> : resulting value in range <code class="language-plaintext highlighter-rouge">{outputMin, outputMax}</code></li>
+</ul>
+
+<hr />
+
+<h1 id="bezier-curves">Bezier Curves</h1>
+
+<p><img style="float: right; margin-left: 1em" src="/assets/posts_images/05-MathGameDev04/bezier_curve1.png" width="30%" /></p>
+
+<p>In most softwares, you have found these type of tools, in which you can add points to a line and curve them. These types of curves are called <code class="language-plaintext highlighter-rouge">Bezier Curves</code> and are sometimes created by nesting <code class="language-plaintext highlighter-rouge">LERP</code> functions.</p>
+
+<h2 id="nesting-lerp-functions">Nesting LERP Functions</h2>
+
+<p>It is called nesting lerp functions, because we are interpolating between values given in order. A more accurate way of portraying these curves would be by calling a <code class="language-plaintext highlighter-rouge">Multipoint LERP</code>, as each point determines a part of the interpolation.</p>
+
+<p>In short, we are interpolating from point to next point first, then from result to result, and so on until there are no more steps to interpolate.</p>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/nestlerp.png" width="80%" />
+</p>
+
+<p>Each step can also be called as the functions such as <code class="language-plaintext highlighter-rouge">Linear, Quadratic, Cubic,...</code></p>
+
+<hr />
+
+<h1 id="basic-physics">Basic Physics</h1>
+
+<p>Vectors are used widely in physics, to represent other metrics. Movement is not one dimentional and as we use more and more dimentions, we can use vectors and new functions to make use of them.</p>
+
+<p>This is a short summary of some concepts.</p>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Δ = delta, because it is not accessible in keyboard, I use δ which is also delta but minuscule</span>
+<span class="c1">// delta means the difference between two value. For example:</span>
+<span class="c1">// δPos = final_pos - initial_pos</span>
+<span class="c1">// δTime = final_time - initial_time</span>
+</code></pre></div></div>
+<h2 id="linear-position-based-changes">Linear Position based changes</h2>
+
+<ul>
+  <li><strong>Distance</strong> <code class="language-plaintext highlighter-rouge">δPosition</code> : Change of position</li>
+  <li><strong>Velocity</strong> <code class="language-plaintext highlighter-rouge">δPosition / δTime</code> : Change of position over time.</li>
+  <li><strong>Speed</strong> <code class="language-plaintext highlighter-rouge">|δPosition| / δTime</code> : Magnitude of the velocity.</li>
+  <li><strong>Acceleration</strong> <code class="language-plaintext highlighter-rouge">δVelocity / δTime</code> : Change of velocity over time.</li>
+  <li><strong>Jerk</strong> <code class="language-plaintext highlighter-rouge">δAcceleration / δTime</code> : Change of acceleration over time.</li>
+  <li>… there are more of these for Linear Position but I don’t think they are as useful.</li>
+</ul>
+
+<hr />
+
+<h1 id="exercise-9-draw-a-coil">Exercise 9: Draw a Coil</h1>
+
+<p>Specifying a height, number of coils and radius of the coil (width):</p>
+
+<h2 id="a---get-the-coil">A - Get the Coil</h2>
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// This problem boils down to generating the initial points of a coil really</span>
+<span class="c1">// You have to go around generating points in a circle</span>
+<span class="c1">// Then for each point you increase its height by a factor of coil and total_height</span>
+
+<span class="kt">float</span> <span class="n">height</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">radius</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">num_points</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">num_coils</span><span class="p">;</span>
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Vector3</span><span class="o">&gt;</span> <span class="n">main_points</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">GeneratePoints</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">main_points</span><span class="p">.</span><span class="n">Clear</span><span class="p">();</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">resolution</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// We transform a value of {0,1} to angle </span>
+        <span class="kt">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">resolution</span><span class="p">)</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="o">*</span><span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+        <span class="c1">// We are using Vector3.up to wind around</span>
+        <span class="c1">// Axis are interchangeable</span>
+        <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">z</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">radius</span><span class="p">;</span>
+        <span class="c1">// Size increase of the first coil which we will repeat</span>
+        <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">height</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">coils</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">resolution</span><span class="p">);</span>
+        <span class="n">main_points</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">OnDrawGizmos</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Vector3</span> <span class="n">up</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span> <span class="o">/</span> <span class="n">coils</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">coils</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">resolution</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// As we do more coils, we increase the height to get to total_height</span>
+            <span class="n">Vector3</span> <span class="n">height_bump</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">up</span> <span class="p">;</span>
+            <span class="n">Vector3</span> <span class="n">start</span> <span class="o">=</span> <span class="n">main_points</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">height_bump</span><span class="p">;</span>
+            <span class="n">Vector3</span> <span class="n">point</span> <span class="o">=</span> <span class="n">main_points</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="o">+</span> <span class="n">height_bump</span><span class="p">;</span>
+            <span class="n">Gizmos</span><span class="p">.</span><span class="n">DrawLine</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">point</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/Ex9_A_Coils.gif" width="80%" />
+</p>
+
+<h2 id="b---interpolate-start-and-end-color">B - Interpolate Start and End Color</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// We are not changing anything really</span>
+<span class="c1">// Just specify a start and end color</span>
+<span class="c1">// Interpolate given the coil we are at and the step inside the circle we are</span>
+
+<span class="c1">// Inside each point add</span>
+<span class="kt">float</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">coils</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">j</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">resolution</span><span class="o">*</span><span class="n">coils</span><span class="p">));</span>
+<span class="n">Gizmos</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">start_col</span><span class="p">,</span> <span class="n">end_col</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/Ex9_B_CoilsCol.gif" width="80%" />
+</p>
+
+<h2 id="c---make-the-coil-follow-a-torus">C - Make the coil follow a Torus</h2>
+
+<p>Now the coil does not just go in a single direction, positions are not arbitrary. Previously I did the points just for a single coil and then expanded by getting more height and reusing points.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// To create All points, we have to:</span>
+<span class="c1">// 1- Get which part of the torus we are</span>
+<span class="c1">// 2- Get which part of the coil we are locally</span>
+<span class="c1">// 3- Transfrom local position to torus position</span>
+
+<span class="kt">void</span> <span class="nf">TorusPoints</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// We use height as torus radius</span>
+    <span class="kt">float</span> <span class="n">torus_rad</span> <span class="o">=</span> <span class="n">height</span><span class="p">;</span>
+    <span class="c1">// Total number of points is now resolution(points per coil) by number of coils</span>
+    <span class="kt">int</span> <span class="n">new_res</span> <span class="o">=</span> <span class="n">resolution</span><span class="o">*</span><span class="n">coils</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">new_res</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Angle of the torus we are at</span>
+        <span class="kt">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">((</span><span class="kt">float</span><span class="p">)</span><span class="n">new_res</span><span class="p">)</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="o">*</span><span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+        <span class="c1">// Position in torus, set with XY axis, could be flipped</span>
+        <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">torus_rad</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">torus_rad</span><span class="p">;</span>
+        <span class="n">Vector3</span> <span class="n">torus_pos</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mf">0.0</span><span class="n">f</span><span class="p">);</span>
+
+        <span class="c1">// Point in the coil winding</span>
+        <span class="c1">// Get first the 0-1 value, or fractional part if the value &gt; resolution</span>
+        <span class="kt">float</span> <span class="n">frac</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">resolution</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Floor</span><span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">resolution</span><span class="p">));</span>
+        <span class="c1">// The transform to angle</span>
+        <span class="kt">float</span> <span class="n">coil_angle</span> <span class="o">=</span> <span class="n">frac</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+        <span class="c1">// And get a local coil position</span>
+        <span class="n">Vector2</span> <span class="n">coil</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">Mathf</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">coil_angle</span><span class="p">)</span> <span class="p">,</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">coil_angle</span><span class="p">))</span> <span class="o">*</span> <span class="n">radius</span><span class="p">;</span>
+
+        <span class="c1">// To transform we will use the origin-&gt;torus_position vector as Right</span>
+        <span class="c1">// Then the origin-&gt;forward as our new up vector to create our local XY Axis</span>
+        <span class="n">Vector3</span> <span class="n">right</span> <span class="o">=</span> <span class="n">torus_pos</span><span class="p">.</span><span class="n">normalized</span><span class="p">;</span>
+        <span class="n">Vector3</span> <span class="n">up</span> <span class="o">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">forward</span><span class="p">;</span>
+        
+        <span class="c1">// Transform from torus_local_space, to world space</span>
+        <span class="n">Vector3</span> <span class="n">localCoilPt</span> <span class="o">=</span> <span class="n">coil</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">right</span> <span class="o">+</span> <span class="n">coil</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">up</span> <span class="o">+</span> <span class="n">torus_pos</span><span class="p">;</span>
+        <span class="n">main_points</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">localCoilPt</span> <span class="o">+</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>     
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// To draw, we use all points, no reusing</span>
+<span class="kt">void</span> <span class="nf">TorusDraw</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">resolution</span><span class="o">*</span><span class="n">coils</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">float</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span> <span class="o">/</span> <span class="p">(</span><span class="kt">float</span><span class="p">)(</span><span class="n">resolution</span><span class="o">*</span><span class="n">coils</span><span class="p">));</span>
+        <span class="n">Gizmos</span><span class="p">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Lerp</span><span class="p">(</span><span class="n">start_col</span><span class="p">,</span> <span class="n">end_col</span><span class="p">,</span> <span class="n">t</span><span class="p">);</span>
+        <span class="n">Gizmos</span><span class="p">.</span><span class="n">DrawLine</span><span class="p">(</span><span class="n">main_points</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">main_points</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/Ex9_C_CoilsTorus.gif" width="80%" />
+</p>
+
+<hr />
+
+<h1 id="exercise-10---replicate-budget-cuts-inventory">Exercise 10 - Replicate Budget Cuts Inventory</h1>
+
+<p><img style="float: right; margin-left: 1em" src="/assets/posts_images/05-MathGameDev04/BC_Inv.png" width="30%" /></p>
+
+<p>In the videogame <em>Budget Cuts</em> from Neat Corp (Freya’s studio), the inventory is basically a radial inventory in a controller. Items are displayed around the circumference, which’s size and quantity of items depend on a defined area/radius for each item.</p>
+
+<p>The objective is to replicate it as best as possible, in 3D too.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Knowing that we can set the pieces in a local position around a radius</span>
+<span class="c1">// then transforming it to the space of any point we decide</span>
+<span class="c1">// We just have to generate points along a circumference, given the radius of the items</span>
+<span class="c1">// To display the items each point requires a local transform in each point</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/BC_Inv_Draw.png" width="80%" />
+</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// First of all, I cheated a little bit</span>
+<span class="c1">// Instead of fitting the balls perfectly in the circle</span>
+<span class="c1">// the item radius in the inventory is approximated to make it easier</span>
+<span class="c1">// Instead of calculating which part of the arc it projects onto</span>
+<span class="c1">// I use the diameter to approximate the are it should cover</span>
+<span class="c1">// It is easy and the more items you have the less the difference it makes</span>
+
+<span class="k">public</span> <span class="kt">float</span> <span class="n">item_radius</span><span class="p">;</span>
+<span class="k">public</span> <span class="kt">int</span> <span class="n">num_items</span><span class="p">;</span>
+<span class="k">public</span> <span class="kt">float</span> <span class="n">inv_radius</span><span class="p">;</span>
+<span class="k">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Vector3</span><span class="o">&gt;</span> <span class="n">item_points</span> <span class="o">=</span> <span class="k">new</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Vector3</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="kt">void</span> <span class="nf">OnValidate</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">item_points</span><span class="p">.</span><span class="n">Clear</span><span class="p">();</span>
+    <span class="kt">float</span> <span class="n">item_circumference</span> <span class="o">=</span> <span class="n">item_radius</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">num_items</span><span class="p">;</span>
+    <span class="c1">// Amount of the circumference the items occupy</span>
+    <span class="kt">float</span> <span class="n">circumference_perc</span> <span class="o">=</span> <span class="n">item_circumference</span> <span class="o">/</span> <span class="p">(</span><span class="n">inv_radius</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="p">);</span> 
+    <span class="kt">float</span> <span class="n">start_circ</span> <span class="o">=</span> <span class="o">-</span><span class="n">circumference_perc</span><span class="o">/</span><span class="mf">2.0</span><span class="n">f</span> <span class="o">+</span> <span class="p">(</span><span class="n">circumference_perc</span><span class="o">/</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">num_items</span> <span class="o">/</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">angle_step</span> <span class="o">=</span> <span class="n">circ_perc</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span> <span class="o">/</span> <span class="n">num_items</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">start_angle</span> <span class="o">=</span> <span class="n">start_circ</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="p">;</span>
+    <span class="c1">// A lot of these calculations can be optimized and lowered in steps</span>
+    <span class="c1">// but this is the whole step of getting the start of where to set items</span>
+    <span class="c1">// and the stepping angle to add them</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_items</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">start_angle</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">angle_step</span><span class="p">));</span>
+        <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="n">Vector3</span> <span class="n">point</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="mf">0.0</span><span class="n">f</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_radius</span><span class="p">;</span>
+        <span class="n">item_points</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+        <span class="c1">// Points are in the Inventory Local Space!</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">OnDrawGizmos</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_items</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// To transform, get the local to World Matrix and multiply the point</span>
+        <span class="n">Vector3</span> <span class="n">point_world</span> <span class="o">=</span> <span class="n">transform</span><span class="p">.</span><span class="n">localToWorldMatrix</span><span class="p">.</span><span class="n">Multiply</span><span class="p">(</span><span class="n">item_points</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">Gizmos</span><span class="p">.</span><span class="n">DrawSphere</span><span class="p">(</span><span class="n">point_world</span><span class="p">,</span> <span class="n">item_radius</span><span class="p">);</span>
+        <span class="c1">// You can guess other debug draws, they are easy if you get here ;)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/Ex10_A_BC_Inv.gif" width="80%" />
+</p>
+
+<h2 id="b---have-variable-item-radius">B - Have Variable Item Radius</h2>
+
+<p>By how it is setup, not much has to change, just the generation of points, and how to step from point to point. But we have to generate the radius per each item first.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Also in previous steps, I calculated first the stepping angle and starting angle</span>
+<span class="c1">// Now as the stepping angle is variable, I decide to go by percentage (0-1) and then</span>
+<span class="c1">// transform to angle</span>
+
+<span class="c1">// Separate into new method for random radius</span>
+<span class="k">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">items_radius</span> <span class="o">=</span> <span class="k">new</span> <span class="n">List</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="kt">void</span> <span class="nf">RandomRadius</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Get random item radius to test</span>
+    <span class="kt">float</span> <span class="n">item_circ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_items</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">items_radius</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">Random</span><span class="p">.</span><span class="n">Range</span><span class="p">(</span><span class="mf">.1</span><span class="n">f</span><span class="p">,</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">));</span>
+        <span class="n">item_circ</span> <span class="o">+=</span> <span class="n">items_radius</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="n">item_circ</span> <span class="o">*=</span> <span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+
+    <span class="c1">// Setup the circumference, percentage of the inventory circumference used</span>
+    <span class="c1">// and the start percentage, not in angle</span>
+    <span class="kt">float</span> <span class="n">inv_circ</span> <span class="o">=</span> <span class="p">(</span><span class="n">inv_rad</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">circ_perc</span> <span class="o">=</span> <span class="n">item_circ</span> <span class="o">/</span> <span class="n">inv_circ</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">start_circ</span> <span class="o">=</span> <span class="o">-</span><span class="n">circ_perc</span><span class="o">/</span><span class="mf">2.0</span><span class="n">f</span><span class="p">;</span>
+    <span class="c1">// We need a cumulative for the angle stepping</span>
+    <span class="c1">// as we don't want to calculate each time all variable steps</span>
+    <span class="c1">// and we can't do a regular step as radius is varibale</span>
+    <span class="kt">float</span> <span class="n">cumul_step</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_items</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>   
+        <span class="c1">// We add the radius to approximate the change in circumference</span>
+        <span class="n">cumul_step</span> <span class="o">+=</span> <span class="p">(</span><span class="n">items_radius</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">inv_circ</span><span class="p">);</span>
+        <span class="c1">// Transform to Angle</span>
+        <span class="kt">float</span> <span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">start_circ</span> <span class="o">+</span> <span class="n">cumul_step</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span><span class="n">f</span> <span class="o">*</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">PI</span><span class="p">;</span>
+        <span class="c1">// The rest is the same</span>
+        <span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Cos</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Mathf</span><span class="p">.</span><span class="n">Sin</span><span class="p">(</span><span class="n">angle</span><span class="p">);</span>
+        <span class="n">Vector3</span> <span class="n">point</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="mf">0.0</span><span class="n">f</span><span class="p">)</span> <span class="o">*</span> <span class="n">inv_rad</span><span class="p">;</span>
+        <span class="n">item_points</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+
+        <span class="c1">// To make sure they do not touch, we add the next part of the radius</span>
+        <span class="n">cumul_step</span> <span class="o">+=</span>  <span class="p">(</span><span class="n">items_radius</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">inv_circ</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p align="center">
+<img src="/assets/posts_images/05-MathGameDev04/Ex10_B_VarRad.gif" width="80%" />
+</p>
+
+<hr />
+
+<h1 id="afterwords">Afterwords</h1>
+
+<p>This series of posts are mainly for my own use. Everyone understands concepts in different ways, after a lot of time battling ways of working (which unfortunately during my studies have been based mostly on crunching) I have found out that having accessible notes on things is the best way. I am awful at remembering thigns correctly and have to check things constantly.</p>
+
+<p>For any other person that does think this theme is useful to them, check <a href="https://www.youtube.com/channel/UC7M-Wz4zK8oikt6ATcoTwBA">Freya Holmer’s Youtube Channel</a>, as most of her content is already uploaded there!</p>
+
+
+    <hr>
+
+    <div align="center">
+    
+      <div class="page-share">
+  <a href="https://twitter.com/intent/tweet?text=Math+for+GameDev+-+Part+4%3A+Interpolation%20%2Fmath%2F2021%2F08%2F17%2FMathForGameDev-4.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmath%2F2021%2F08%2F17%2FMathForGameDev-4.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Math+for+GameDev+-+Part+4%3A+Interpolation&url=%2Fmath%2F2021%2F08%2F17%2FMathForGameDev-4.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+    
+    </div>
+
+    
+
+    <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/math/2021/08/13/MathForGameDev-3.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Math for GameDev - Part 3: Trigonometry
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+  </div !-- Custom Post-->
+</div !-- Main -->
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/MarcTorres_Dev"><i class="fab fa-twitter fa-3x" alt="Twitter"></i></a><a class="social-icon" href="https://instagram.com/MarcTorresDev"><i class="fab fa-instagram fa-3x" alt="Instagram"></i></a><a class="social-icon" href="https://github.com/MarcFly"><i class="fab fa-github fa-3x" alt="GitHub"></i></a><a class="social-icon" href="https://twitch.tv/MarcTorres_Dev"><i class="fab fa-twitch fa-3x" alt="Twitch"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2021 Marc Torres' Devlog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>

@@ -18,4 +18,9 @@ var store = [{
         "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Angles As vectors, they are...","categories": ["Math"],
         "tags": ["math","game development","introduction"],
         "url": "/math/2021/08/13/MathForGameDev-3.html"
+      },{
+        "title": "Math for GameDev - Part 4: Interpolation",
+        "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Interpolation The meaning of interpolation...","categories": ["Math"],
+        "tags": ["math","game development","introduction"],
+        "url": "/math/2021/08/17/MathForGameDev-4.html"
       },]
