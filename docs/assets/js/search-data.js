@@ -23,4 +23,9 @@ var store = [{
         "excerpt":"Freya Holmer published some time ago some classes on the basic maths required for gamedev. Having myself not been a great math student in university I think it is important for myself to have notes in an accessible form. Hope it is useful to someone. Interpolation The meaning of interpolation...","categories": ["Math"],
         "tags": ["math","game development","introduction"],
         "url": "/math/2021/08/17/MathForGameDev-4.html"
+      },{
+        "title": "Making a usable Multithreaded Task System - Part 1",
+        "excerpt":"Getting out of my studies I understand how to create a thread and execute a task there, as well as making an extremely basic manager that controls how that is performed with little overhead. But that same structure does not allow to chain tasks, know when a task is done...","categories": ["Programming"],
+        "tags": ["multithreading","programming","learning"],
+        "url": "/programming/2021/09/20/Multithreading-1.html"
       },]

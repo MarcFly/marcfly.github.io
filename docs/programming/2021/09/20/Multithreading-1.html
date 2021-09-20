@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Making a usable Multithreaded Task System - Part 1 | Marc Torres’ Devlog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Making a usable Multithreaded Task System - Part 1" />
+<meta name="author" content="Marc Torres Jimenez" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Series of posts in which I detail how I make my own multithreaded task/job system" />
+<meta property="og:description" content="Series of posts in which I detail how I make my own multithreaded task/job system" />
+<meta property="og:site_name" content="Marc Torres’ Devlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-20T00:00:00+02:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Making a usable Multithreaded Task System - Part 1" />
+<meta name="twitter:site" content="@MarcTorres_Dev" />
+<meta name="twitter:creator" content="@MarcTorres_Dev" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Marc Torres Jimenez"},"headline":"Making a usable Multithreaded Task System - Part 1","dateModified":"2021-09-20T00:00:00+02:00","@type":"BlogPosting","datePublished":"2021-09-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/programming/2021/09/20/Multithreading-1.html"},"description":"Series of posts in which I detail how I make my own multithreaded task/job system","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/images/BongoFlyR.jpg"},"name":"Marc Torres Jimenez"},"url":"/programming/2021/09/20/Multithreading-1.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Marc Torres&#39; Devlog" href="/atom.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  making-a-usable-multithreaded-task-system-part-1">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/"><i class="fas fa-home fa-2x"></i></a></li><li><a href="/posts/"><i class="fas fa-file-alt fa-2x"></i></a></li><li><a href="/categories/"><i class="fas fa-archive fa-2x"></i></a></li><li><a href="/tags/"><i class="fas fa-tags fa-2x"></i></a></li><li><a href="/about/"><i class="fas fa-user fa-2x"></i></a></li><li><a href="/search/"><i class="fas fa-search fa-2x"></i></a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+
+    <div id="main" class="main-content" aria-label="Content">
+  <div class="page-custom-post">
+
+    <!--
+-->
+    
+    
+      <h1 id="page-title" class="page-title p-name">Making a usable Multithreaded Task System - Part 1
+</h1>
+    
+    <hr>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Categories:</b></li><li class="page-taxonomy"><a class="p-category" href="/categories/#programming" title="Pages filed under Programming">Programming</a></li>
+    </ul>
+
+    
+    <ul class="page-taxonomies">
+      <li><b>Tags:</b></li><li class="page-taxonomy"><a href="/tags/#learning" title="Pages tagged learning" rel="tag">learning</a></li><li class="page-taxonomy"><a href="/tags/#multithreading" title="Pages tagged multithreading" rel="tag">multithreading</a></li><li class="page-taxonomy"><a href="/tags/#programming" title="Pages tagged programming" rel="tag">programming</a></li>
+    </ul>
+
+    <hr>
+    <p>Getting out of my studies I understand how to create a thread and execute a task there, as well as making an extremely basic manager that controls how that is performed with little overhead.</p>
+
+<p>But that same structure does not allow to chain tasks, know when a task is done without callbacks, no internal synchronization,… Therea re a lot of things that are present in other engines and existing libraries.</p>
+
+<p>I could use those libraries or not even do my own engine, but I would not be properly learning about it, so here I am.</p>
+
+<p>On this first post about the task system, the base structure will be laid out to execute tasks and schedule tasks. In the conclusion, the next steps and thigns I find are missing will be explained.</p>
+
+<hr />
+
+<h1 id="introduction">Introduction</h1>
+
+<p>The base is pretty simple, you add a task to a queue that will be executed in a thread somewhere. In order to achieve such thing there are some things that these task must check:</p>
+<ul>
+  <li>Tasks are self contained, data used in that task is only used by that task and nowhere else at the same time.</li>
+  <li>Tasks + Setup are expensive enough to part away, or numerous enoughh to be worth subdividing and then synchronizing the results.</li>
+  <li>Tasks are not prioritary, whenever we finish it we can use it but is not needed <strong>now</strong>.</li>
+</ul>
+
+<p>These constraints are the ones I currently know of and the ones, but my task manager and any task manager will take care of it. It is job of the programmer designing the tasks to acknowledge when to use them and how to set them up.</p>
+
+<h2 id="task">Task</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Task</span>
+<span class="p">{</span>
+    <span class="nl">public:</span>
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Example_Task</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Task</span>
+<span class="p">{</span>
+    <span class="c1">// Some data that it uses and has to be setup for parallel use</span>
+    <span class="kt">uint32_t</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+
+    <span class="c1">// Override the execution function</span>
+    <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="k">override</span>
+    <span class="p">{</span>
+        <span class="c1">// Do somethign</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is the simplest form of a task in my manager. You <code class="language-plaintext highlighter-rouge">override</code> an executing function that the manager will <code class="language-plaintext highlighter-rouge">run</code> on a thread when available.</p>
+
+<h2 id="manager">Manager</h2>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TaskManager</span>
+<span class="p">{</span>
+    <span class="nl">public:</span>
+    <span class="kt">bool</span> <span class="n">Init</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="n">Close</span><span class="p">();</span>
+
+    <span class="kt">void</span> <span class="n">ScheduleTask</span><span class="p">(</span><span class="n">Task</span><span class="o">*</span> <span class="n">task</span><span class="p">);</span>
+
+    <span class="nl">private:</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">*&gt;</span> <span class="n">threads</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">Task</span><span class="o">*&gt;</span> <span class="n">scheduled_tasks</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">_queue_mtx</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">condition_variable</span> <span class="n">_thread_event</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span> <span class="n">exit_flag</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>The basic setup to hold tasks and feed the threads slowly. The mutex will serve as a barrier to ask permission to access the queue and get a task.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">std::conditional_variable</code> warns the threads that are waiting for the queue to get tasks or when it is time to close.</p>
+
+<h3 id="initialization">Initialization</h3>
+
+<p>Each thread has to be initialized and be running a function that in short: asks the mutex for permission to use the queue and then execute it, if there are no tasks available, one thread will be the one blocking the mutex and waiting for a task to be available.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">ThreadLoop</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Task</span><span class="o">*</span> <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">lock</span><span class="p">(</span><span class="n">_queue_mtx</span><span class="p">);</span>
+            <span class="k">while</span><span class="p">(</span><span class="n">t</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">exit_flag</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">scheduled_tasks</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+                    <span class="n">_thread_event</span><span class="p">.</span><span class="n">wait</span><span class="p">(</span><span class="n">lock</span><span class="p">);</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                    <span class="n">t</span> <span class="o">=</span> <span class="n">scheduled_tasks</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+                    <span class="n">scheduled_tasks</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">exit_flag</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+
+        <span class="n">t</span><span class="o">-&gt;</span><span class="n">run</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As for the initialization, we can arbitrarily assign a number of threads that running function, but I prefer to assign as many logic threads that are available (hyperthreads / 2x cores /… depends on CPU architecture).</p>
+
+<p>I have not tested at which point too many threads in relation to the logical threads is an issue, or even if there are gains to be made really. Logic tells me that as long as you map it precisely or even less (main thread and other program tasks) should be at least decent.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">Tasker</span><span class="o">::</span><span class="n">Init</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="o">::</span><span class="n">hardware_concurrency</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">threads</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="k">new</span> <span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">(</span><span class="n">ThreadLoop</span><span class="p">));</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="closing">Closing</h3>
+
+<p>We notify the threads that we are done, we make them finisht he task and close themselves and delete the threads.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">bool</span> <span class="n">Tasker</span><span class="o">::</span><span class="n">Close</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">ret</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    
+    <span class="n">exit_flag</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="n">_thread_event</span><span class="p">.</span><span class="n">notify_all</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">uint16_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threads</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">threads</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">join</span><span class="p">();</span>
+        <span class="k">delete</span> <span class="n">threads</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">threads</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="scheduling-tasks">Scheduling Tasks</h3>
+
+<p>As we have a single queue to add and supply tasks, multipel threads will be requesting access to it. We need to ask for permission to use it, add it quickly and notify the threads that a task has been added (in case they are waiting for tasks to be feed with).</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="n">Tasker</span><span class="o">::</span><span class="n">ScheduleTask</span><span class="p">(</span><span class="n">Task</span><span class="o">*</span> <span class="n">task</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">qLock</span><span class="p">(</span><span class="n">_queue_mtx</span><span class="p">);</span>
+    <span class="n">scheduled_tasks</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+    <span class="n">_thread_event</span><span class="p">.</span><span class="n">notify_one</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="closing-1">Closing</h1>
+
+<p>This base is extremely barebones. The only example of practicality would be to use it on do and forget type tasks, such as any asyncrhonous action like loadign non trivial data, networking,… or pinning down threads with a recurrent task like rendering which you only have to lock access to some data structure to send request to GPU.</p>
+
+<p>What I want in my task/job system is to be able to schedule them in relation to toher tasks, have recurrent tasks, know what is being done or note, make sure there are no bottlenecks when asking for tasks…</p>
+
+<p>There are a ton of things that come to mind which I don’t know the solution of and until I understand it, I don’t feel capable of using another library that helps me with that. I don’t like feeling that I do things based on unknown black magic (although most of what we use might as well be).</p>
+
+
+    <hr>
+
+    <div align="center">
+    
+      <div class="page-share">
+  <a href="https://twitter.com/intent/tweet?text=Making+a+usable+Multithreaded+Task+System+-+Part+1%20%2Fprogramming%2F2021%2F09%2F20%2FMultithreading-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fprogramming%2F2021%2F09%2F20%2FMultithreading-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Making+a+usable+Multithreaded+Task+System+-+Part+1&url=%2Fprogramming%2F2021%2F09%2F20%2FMultithreading-1.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+    
+    </div>
+
+    
+
+    <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/math/2021/08/17/MathForGameDev-4.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Math for GameDev - Part 4: Interpolation
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+  </div !-- Custom Post-->
+</div !-- Main -->
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/MarcTorres_Dev"><i class="fab fa-twitter fa-3x" alt="Twitter"></i></a><a class="social-icon" href="https://instagram.com/MarcTorresDev"><i class="fab fa-instagram fa-3x" alt="Instagram"></i></a><a class="social-icon" href="https://github.com/MarcFly"><i class="fab fa-github fa-3x" alt="GitHub"></i></a><a class="social-icon" href="https://twitch.tv/MarcTorres_Dev"><i class="fab fa-twitch fa-3x" alt="Twitch"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2021 Marc Torres' Devlog. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+<!-- MathJax -->
+
+<script>
+// http://docs.mathjax.org/en/latest/upgrading/v2.html
+MathJax = {
+  tex: {
+      tags: "ams"    // eq numbering options: none, ams, all
+  },
+  options: {
+    renderActions: {
+      // for mathjax 3, handle <script "math/tex"> blocks inserted by kramdown
+      find: [10, function (doc) {
+        for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+          const display = !!node.type.match(/; *mode=display/);
+          const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+          const text = document.createTextNode('');
+          node.parentNode.replaceChild(text, node);
+          math.start = {node: text, delim: '', n: 0};
+          math.end = {node: text, delim: '', n: 0};
+          doc.math.push(math);
+        }
+      }, '']
+    }
+  }
+}
+</script>
+
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+  </body>
+
+</html>
